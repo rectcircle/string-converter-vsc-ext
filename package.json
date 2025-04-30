@@ -9,13 +9,17 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": ["*"],
   "browser": "./dist/web/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "string-converter.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "string-converter.showText",
+        "title": "Show Selected Text"
       }
     ]
   },
