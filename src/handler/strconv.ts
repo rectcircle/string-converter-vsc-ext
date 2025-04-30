@@ -19,9 +19,7 @@ export function showTextCommandCallback() {
     vscode.window.showInformationMessage(`Selected text: ${text}`);
 }
 
-export function helloWorldCommandCallback() {
-    vscode.window.showInformationMessage('Hello World from String Converter in a web extension host!');
-}
+
 
 export function getCodeActionProviderCallback(): vscode.CodeActionProvider {
     return {

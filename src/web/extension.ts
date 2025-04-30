@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { showTextCommandCallback, helloWorldCommandCallback, getCodeActionProviderCallback } from '../handler/strconv';
+import { showTextCommandCallback, getCodeActionProviderCallback } from '../handler/strconv';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -12,10 +12,10 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "string-converter" is now active in the web extension host!');
 
 	const showTextCommand = vscode.commands.registerCommand('string-converter.showText', showTextCommandCallback);
-	const disposable = vscode.commands.registerCommand('string-converter.helloWorld', helloWorldCommandCallback);
+
 	const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', getCodeActionProviderCallback());
 
-	context.subscriptions.push(showTextCommand, disposable, codeActionProvider);
+	context.subscriptions.push(showTextCommand, codeActionProvider);
 }
 
 // This method is called when your extension is deactivated
