@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 
-export function showTextCommandCallback() {
+export async function showTextCommandCallback() {
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
         vscode.window.showInformationMessage('No active editor found');
@@ -16,7 +16,18 @@ export function showTextCommandCallback() {
         text = wordRange ? editor.document.getText(wordRange) : 'No text found';
     }
 
-    vscode.window.showInformationMessage(`Selected text: ${text}`);
+    const highlights = await vscode.commands.executeCommand<vscode.DocumentHighlight[]>(
+        'vscode.executeDocumentHighlights',
+        editor.document.uri,
+        selection.active
+    );
+    
+    let highlightText = '';
+    if (highlights && highlights.length > 0) {
+        highlightText = editor.document.getText(highlights[0].range);
+    }
+    const highlightInfo = highlights ? `Highlights count: ${highlights.length}${highlightText ? `, First highlight text: ${highlightText}` : ''}` : 'No highlights found';
+    vscode.window.showInformationMessage(`Selected text: ${text}\n${highlightInfo}`);
 }
 
 
