@@ -22,7 +22,7 @@ function getTokenContent(token: Prism.Token | string): string {
     return '';
 }
 
-export function extractCodeToken(
+export function extractCodeTokens(
     codeContent: string,
     languageId: string,
     position: number,  // 包含
@@ -54,6 +54,10 @@ export function extractCodeToken(
         const currentStartPos = currentEndPos;
         // 一般是空白字符。无需处理
         if (typeof token === 'string') {
+            if (token.trim() === '') {
+                currentEndPos = currentEndPos + token.length;
+                continue;
+            }
             token = {
                 type: 'unknown',
                 content: token,
