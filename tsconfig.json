@@ -8,10 +8,18 @@
 		],
 		"sourceMap": true,
 		"rootDir": "src",
+		// @types/prismjs 依赖 dom，但是 vscode 插件运行在 webworker 中，会报错。
+		// 我们用的是 prismjs 解析 token 的函数，和 dom 无关，所以没有实质影响。
+		// 为了不报错，关掉库类型检查。
+		"skipLibCheck": true, 
 		"strict": true,   /* enable all strict type-checking options */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
-	}
+	},
+	"exclude": [
+		"testdata/**",
+		"node_modules/**",
+	]
 }

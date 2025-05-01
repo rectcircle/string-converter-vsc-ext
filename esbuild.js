@@ -2,6 +2,7 @@ const esbuild = require('esbuild');
 const glob = require('glob');
 const path = require('path');
 const polyfill = require('@esbuild-plugins/node-globals-polyfill');
+const { prismjsPlugin } = require('esbuild-plugin-prismjs')
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
@@ -78,12 +79,15 @@ async function main() {
 		},
 
 		plugins: [
+			prismjsPlugin({
+				languages: 'all'
+			}),
 			polyfill.NodeGlobalsPolyfillPlugin({
 				process: true,
 				buffer: true,
 			}),
 			testBundlePlugin,
-			esbuildProblemMatcherPlugin, /* add to the end of plugins array */
+			esbuildProblemMatcherPlugin, /* add to the end of plugins array */	
 		],
 	});
 	if (watch) {
