@@ -6,6 +6,10 @@ export interface TokenInfo {
     Type: string;
 }
 
+interface internalTokenInfo extends TokenInfo   {
+    StartOffset: number,
+    EndOffset: number,
+} 
 function getTokenContent(token: Prism.Token | string): string {
     if (typeof token === 'string') {
         return token;
@@ -25,37 +29,37 @@ function getTokenContent(token: Prism.Token | string): string {
 export function extractCodeTokens(
     codeContent: string,
     languageId: string,
-    position: number,  // 包含
-    endPosition?: number,  // 不包含
+    offset: number,  // 包含
+    endOffset?: number,  // 不包含
     selectionText?: string
 ): TokenInfo[] {
     'abc'.substring(0, 1);
     // 检查语言支持
     // 导入 Prism 库
     if (!Prism.languages[languageId]) {
-        if (selectionText) {
+        if (endOffset !== undefined && selectionText) {
             return [{
                 OriginText: selectionText,
                 Text: selectionText,
-                Type: 'unknown'
+                Type: 'unknown',
             }];
         }
         return [];
     }
     // 获取token列表
     const tokens = Prism.tokenize(codeContent, Prism.languages[languageId]);
-    const tokenInfos: TokenInfo[] = [];
+    const tokenInfos: internalTokenInfo[] = [];
 
-    // 过滤 position，endPosition? 范围内的 token。
+    // 过滤 offset，endOffset? 范围内的 token。
     // tokens 类型为 (string | Prism.Token)[]， Prism.Token 是一个展平的结构。
-    let currentEndPos = 0;
+    let currentEndOffset = 0;
     // console.log('===== tokens', tokens);
     for (let token of tokens) {
-        const currentStartPos = currentEndPos;
+        const currentStartOffset = currentEndOffset;
         // 一般是空白字符。无需处理
         if (typeof token === 'string') {
             if (token.trim() === '') {
-                currentEndPos = currentEndPos + token.length;
+                currentEndOffset = currentEndOffset + token.length;
                 continue;
             }
             token = {
@@ -67,39 +71,55 @@ export function extractCodeTokens(
             }
         }
         // 处理 token
-        currentEndPos = currentEndPos + token.length;
+        currentEndOffset = currentEndOffset + token.length;
         // 是选中的范围
-        if (endPosition) {
-            // console.log('===== pos', currentStartPos, currentEndPos, position, endPosition);
-            if (currentStartPos >= endPosition) {
+        if (endOffset) {
+            // console.log('===== pos', currentStartOffset, currentEndOffset, offset, endOffset);
+            if (currentStartOffset >= endOffset) {
                 break;
             }
-            if (currentEndPos < position) {
+            if (currentEndOffset < offset) {
                 continue;
             }
             const text = getTokenContent(token);
             tokenInfos.push({
                 OriginText: text,
                 Text: text,
-                Type: token.type
+                Type: token.type,
+                StartOffset: currentStartOffset,
+                EndOffset: currentEndOffset,
             })
             continue;
         }
         // 是光标位置
         const text = getTokenContent(token);
-        if (position >= currentStartPos && position <= currentEndPos) {
+        if (offset >= currentStartOffset && offset <= currentEndOffset) {
             tokenInfos.push({
                 OriginText: text,
                 Text: text,
-                Type: token.type
+                Type: token.type,
+                StartOffset: currentStartOffset,
+                EndOffset: currentEndOffset,
             })
             break;
         }
     }
     // 选中了字符串类型的 Token 的一部分场景。
-    if (selectionText !== undefined && tokenInfos.length === 1 && (tokenInfos[0].Type === 'string' || tokenInfos[0].Type ==='template-string')) {
-        const tokenOriginText = tokenInfos[0].OriginText;
-        const originText = tokenOriginText[0] + selectionText + tokenOriginText[tokenOriginText.length-1];
+    if (
+        selectionText !== undefined &&
+        endOffset !== undefined &&
+        tokenInfos.length === 1 &&
+        (tokenInfos[0].Type === 'string' || tokenInfos[0].Type ==='template-string')
+    ) {
+        const tokenInfo = tokenInfos[0];
+        const tokenOriginText = tokenInfo.OriginText;
+        let originText = selectionText;
+        if (tokenInfo.StartOffset != offset) {
+            originText = (tokenOriginText[0] || '') + originText;
+        }
+        if (tokenInfo.EndOffset != endOffset) {
+            originText = originText + (tokenOriginText[tokenOriginText.length - 1] || '');
+        }
         return [{
             OriginText: originText,
             Text: originText,

@@ -14,20 +14,15 @@ type CodeActionWithData = vscode.CodeAction & {
 export function getCodeActionProviderCallback(): vscode.CodeActionProvider<CodeActionWithData> {
     return {
         provideCodeActions: async (document: vscode.TextDocument, range: vscode.Range, context: vscode.CodeActionContext, token: vscode.CancellationToken) => {
-            const activeEditor = vscode.window.activeTextEditor;
-            if (!activeEditor) {
-                return [];
-            }
-            const codeContent = activeEditor.document.getText();
-            const selection = activeEditor.selection;
-            const startOffset = activeEditor.document.offsetAt(selection.start);
+            const codeContent = document.getText();
+            const startOffset = document.offsetAt(range.start);
             let endOffset: number | undefined;
             let selectionText: string | undefined;
-            if (!selection.isEmpty) {
-                selectionText = activeEditor.document.getText(selection);
-                endOffset = activeEditor.document.offsetAt(selection.end);
+            if (!range.isEmpty) {
+                selectionText = document.getText(range);
+                endOffset = document.offsetAt(range.end);
             }
-            const tokens = extractCodeTokens(codeContent, activeEditor.document.languageId, startOffset, endOffset, selectionText);
+            const tokens = extractCodeTokens(codeContent, document.languageId, startOffset, endOffset, selectionText);
             
             return tokens.map(token => {
                 const action = new vscode.CodeAction('Convert String: ' + token.Text, vscode.CodeActionKind.Refactor) as CodeActionWithData;
