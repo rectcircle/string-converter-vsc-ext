@@ -2,9 +2,9 @@ import Prism from 'prismjs';
 import { parseLiteral } from './literalParser';
 
 export interface TokenInfo {
-    OriginText: string;
-    Text: string;
-    Type: string;
+    originText: string;
+    text: string;
+    type: string;
 }
 
 interface internalTokenInfo extends TokenInfo   {
@@ -40,9 +40,9 @@ export function extractCodeTokens(
     if (!Prism.languages[languageId]) {
         if (endOffset !== undefined && selectionText) {
             return [{
-                OriginText: selectionText,
-                Text: parseLiteral(languageId, selectionText, 'unknown'),
-                Type: 'unknown',
+                originText: selectionText,
+                text: parseLiteral(languageId, selectionText, 'unknown'),
+                type: 'unknown',
             }];
         }
         return [];
@@ -84,9 +84,9 @@ export function extractCodeTokens(
             }
             const originText = getTokenContent(token);
             tokenInfos.push({
-                OriginText: originText,
-                Text: parseLiteral(languageId, originText, token.type),
-                Type: token.type,
+                originText: originText,
+                text: parseLiteral(languageId, originText, token.type),
+                type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
             })
@@ -96,9 +96,9 @@ export function extractCodeTokens(
         const originText = getTokenContent(token);
         if (offset >= currentStartOffset && offset <= currentEndOffset) {
             tokenInfos.push({
-                OriginText: originText,
-                Text: parseLiteral(languageId, originText, token.type),
-                Type: token.type,
+                originText: originText,
+                text: parseLiteral(languageId, originText, token.type),
+                type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
             })
@@ -110,10 +110,10 @@ export function extractCodeTokens(
         selectionText !== undefined &&
         endOffset !== undefined &&
         tokenInfos.length === 1 &&
-        (tokenInfos[0].Type === 'string' || tokenInfos[0].Type ==='template-string')
+        (tokenInfos[0].type === 'string' || tokenInfos[0].type ==='template-string')
     ) {
         const tokenInfo = tokenInfos[0];
-        const tokenOriginText = tokenInfo.OriginText;
+        const tokenOriginText = tokenInfo.originText;
         let originText = selectionText;
         if (tokenInfo.StartOffset != offset) {
             originText = (tokenOriginText[0] || '') + originText;
@@ -122,9 +122,9 @@ export function extractCodeTokens(
             originText = originText + (tokenOriginText[tokenOriginText.length - 1] || '');
         }
         return [{
-            OriginText: originText,
-            Text: parseLiteral(languageId, originText, tokenInfos[0].Type),
-            Type: tokenInfos[0].Type
+            originText: originText,
+            text: parseLiteral(languageId, originText, tokenInfos[0].type),
+            type: tokenInfos[0].type
         }]
     }
     return tokenInfos;
