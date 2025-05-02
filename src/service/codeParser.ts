@@ -1,4 +1,5 @@
 import Prism from 'prismjs';
+import { parseLiteral } from './literalParser';
 
 export interface TokenInfo {
     OriginText: string;
@@ -40,7 +41,7 @@ export function extractCodeTokens(
         if (endOffset !== undefined && selectionText) {
             return [{
                 OriginText: selectionText,
-                Text: selectionText,
+                Text: parseLiteral(languageId, selectionText, 'unknown'),
                 Type: 'unknown',
             }];
         }
@@ -81,10 +82,10 @@ export function extractCodeTokens(
             if (currentEndOffset < offset) {
                 continue;
             }
-            const text = getTokenContent(token);
+            const originText = getTokenContent(token);
             tokenInfos.push({
-                OriginText: text,
-                Text: text,
+                OriginText: originText,
+                Text: parseLiteral(languageId, originText, token.type),
                 Type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
@@ -92,11 +93,11 @@ export function extractCodeTokens(
             continue;
         }
         // 是光标位置
-        const text = getTokenContent(token);
+        const originText = getTokenContent(token);
         if (offset >= currentStartOffset && offset <= currentEndOffset) {
             tokenInfos.push({
-                OriginText: text,
-                Text: text,
+                OriginText: originText,
+                Text: parseLiteral(languageId, originText, token.type),
                 Type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
@@ -122,14 +123,9 @@ export function extractCodeTokens(
         }
         return [{
             OriginText: originText,
-            Text: originText,
+            Text: parseLiteral(languageId, originText, tokenInfos[0].Type),
             Type: tokenInfos[0].Type
         }]
     }
     return tokenInfos;
 }
-
-// 语言特定的解析器可以在这里添加
-// 例如：
-// function extractTypeScriptToken(...) {...}
-// function extractPythonToken(...) {...}
