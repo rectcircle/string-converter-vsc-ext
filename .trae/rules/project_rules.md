@@ -7,8 +7,9 @@
 ## 生成单测规则
 
 * 该规则仅对 src 目录下的文件生效。
-* 本项目使用了 mocha 单测框架、 assert 断言库。
-* 使用  suite 代替 describe。
+* 本项目使用了 mocha 单测框架、 assert 断言库 （`import assert from 'assert'`）。
+* 使用 suite 代替 describe。
+* 不要用已经废弃的 assert.equal 而要使用 assert.strictEqual 。
 * src/path/to/file.ts 对应的单测文件为 src/web/test/suite/path/to/file.test.ts。
 * 测试文件结构如下：
 
@@ -21,3 +22,4 @@
         });
     });
     ```
+* 最后需要在 src/web/test/suite/path/to/index.test.ts 里面导入 src/web/test/suite/path/to/file.test.ts。
