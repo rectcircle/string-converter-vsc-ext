@@ -69,7 +69,7 @@ export function extractCodeTokens(
                 length: token.length,
                 alias: undefined as any,
                 greedy: undefined as any,
-            }
+            };
         }
         // 处理 token
         currentEndOffset = currentEndOffset + token.length;
@@ -89,7 +89,7 @@ export function extractCodeTokens(
                 type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
-            })
+            });
             continue;
         }
         // 是光标位置
@@ -101,7 +101,7 @@ export function extractCodeTokens(
                 type: token.type,
                 StartOffset: currentStartOffset,
                 EndOffset: currentEndOffset,
-            })
+            });
             break;
         }
     }
@@ -115,17 +115,17 @@ export function extractCodeTokens(
         const tokenInfo = tokenInfos[0];
         const tokenOriginText = tokenInfo.originText;
         let originText = selectionText;
-        if (tokenInfo.StartOffset != offset) {
+        if (tokenInfo.StartOffset !== offset) {
             originText = (tokenOriginText[0] || '') + originText;
         }
-        if (tokenInfo.EndOffset != endOffset) {
+        if (tokenInfo.EndOffset !== endOffset) {
             originText = originText + (tokenOriginText[tokenOriginText.length - 1] || '');
         }
         return [{
             originText: originText,
             text: parseLiteral(languageId, originText, tokenInfos[0].type),
             type: tokenInfos[0].type
-        }]
+        }];
     }
     return tokenInfos;
 }

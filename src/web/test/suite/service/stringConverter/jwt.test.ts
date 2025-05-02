@@ -43,8 +43,8 @@ suite('src/service/stringConverter/jwt.ts', () => {
                     originText: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"'
                 };
                 const result = parser.convert(tokenInfo);
-                assert.ok(result.includes('"alg": "HS256"'));
-                assert.ok(result.includes('"sub": "1234567890"'));
+                assert.ok(result.result.includes('"alg": "HS256"'));
+                assert.ok(result.result.includes('"sub": "1234567890"'));
             });
         });
     });

@@ -1,31 +1,47 @@
 import { TokenInfo } from "./codeParser";
 import { DefaultConverter } from "./stringConverter/default";
-import { StringConverter, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
 import { JwtParser } from "./stringConverter/jwt";
 
+export interface MatchResult {
+    meta: StringConverterMeta;
+    byProduct?: any;
+}
+
 class StringConverterManager {
-    private converters: StringConverter[] = [];
+    private converters: StringConverter<any>[] = [];
 
     register(converter: StringConverter): void {
         this.converters.push(converter);
     }
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMeta[] {
+    match(tokenInfo: TokenInfo, options?: StringConverterOptions): MatchResult[] {
         return this.converters
-            .filter(converter => converter.match(tokenInfo, options))
-            .map(converter => converter.meta);
+            .map(converter => {
+                return {
+                    matchResult: converter.match(tokenInfo, options),
+                    meta: converter.meta,
+                };
+            })
+            .filter(converter => converter.matchResult.matched)
+            .map(converter => {
+                return {
+                    meta: converter.meta,
+                    byProduct: converter.matchResult.byProduct,
+                };
+            });
     }
 
     convert(
         tokenInfo: TokenInfo, 
-        meta: StringConverterMeta, 
+        matchResult: MatchResult, 
         options?: StringConverterOptions
-    ): string {
-        const converter = this.converters.find(c => c.meta.id === meta.id);
+    ): StringConverterConvertResult {
+        const converter = this.converters.find(c => c.meta.id === matchResult.meta.id);
         if (!converter) {
-            throw new Error(`Converter with id ${meta.id} not found`);
+            throw new Error(`Converter with id ${matchResult.meta.id} not found`);
         }
-        return converter.convert(tokenInfo, options);
+        return converter.convert(tokenInfo, matchResult.byProduct, options);
     }
 }
 
