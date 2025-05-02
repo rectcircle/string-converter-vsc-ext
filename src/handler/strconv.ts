@@ -1,10 +1,17 @@
 import * as vscode from 'vscode';
+import { v4 as uuidv4 } from 'uuid';
 import { extractCodeTokens, TokenInfo } from '../service/codeParser';
 import { stringConverterManager } from '../service/stringConverter';
 import { StringConverterMeta } from '../service/stringConverter/interface';
+import { strconvMemFileSystem } from './memfs';
 
 export async function showTextCommandCallback(token: TokenInfo, meta: StringConverterMeta) {
-    vscode.window.showInformationMessage(`${meta.name}: ${stringConverterManager.convert(token, meta)}`);
+    const result = stringConverterManager.convert(token, meta);
+    const uri = strconvMemFileSystem.createUri(`${meta.name}.md`);
+    strconvMemFileSystem.update(uri, "```jsonc\n" + result + "\n```");
+    await vscode.commands.executeCommand('markdown.showPreviewToSide', uri, {
+        locked: true,
+    });
 }
 
 type CodeActionWithData = vscode.CodeAction & { 
@@ -40,7 +47,7 @@ export function getCodeActionProviderCallback(): vscode.CodeActionProvider<CodeA
                 command: 'string-converter.showText',
                 title: 'Convert Selected Text',
                 arguments: [action.data.token, action.data.meta],
-            }
+            };
             return action;
         }
     };
