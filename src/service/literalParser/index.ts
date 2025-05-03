@@ -1,5 +1,6 @@
 import { parseTypeScriptStringLiteral as parseTypeScriptStringLiteral } from './typescript';
 import { parseJSONStringLiteral } from './json';
+import { parseGoStringLiteral } from './go';
 
 type StringLiteralParser = (originText: string, type: string) => string;
 
@@ -24,3 +25,6 @@ registerLiteralParser('javascript', parseTypeScriptStringLiteral);
 
 // 注册JSON解析器
 registerLiteralParser('json', parseJSONStringLiteral);
+
+// 注册Go解析器
+registerLiteralParser('go', parseGoStringLiteral);

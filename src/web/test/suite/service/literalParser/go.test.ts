@@ -1,0 +1,31 @@
+import { parseLiteral } from '../../../../../service/literalParser/index';
+import assert from 'assert';
+
+suite('src/service/literalParser/go.ts', () => {
+    suite('parseGoStringLiteral', () => {
+        test('should parse interpreted string literal', () => {
+            const result = parseLiteral('go', '\"test\\n\\t\\\"quote\\\"\"', 'string');
+            assert.strictEqual(result, 'test\n\t\"quote\"');
+        });
+
+        test('should parse raw string literal', () => {
+            const result = parseLiteral('go', '`test\n\t\"quote\"`', 'string');
+            assert.strictEqual(result, 'test\n\t\"quote\"');
+        });
+
+        test('should handle hex escape sequence', () => {
+            const result = parseLiteral('go', '\"\\x41\"', 'string');
+            assert.strictEqual(result, 'A');
+        });
+
+        test('should handle unicode escape sequence', () => {
+            const result = parseLiteral('go', '\"\\u0041\"', 'string');
+            assert.strictEqual(result, 'A');
+        });
+
+        test('should handle long unicode escape sequence', () => {
+            const result = parseLiteral('go', '\"\\U00000041\"', 'string');
+            assert.strictEqual(result, 'A');
+        });
+    });
+});
