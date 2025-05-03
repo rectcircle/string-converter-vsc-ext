@@ -1,6 +1,7 @@
 import { parseTypeScriptStringLiteral as parseTypeScriptStringLiteral } from './typescript';
 import { parseJSONStringLiteral } from './json';
 import { parseGoStringLiteral } from './go';
+import { parseRustStringLiteral } from './rust';
 
 type StringLiteralParser = (originText: string, type: string) => string;
 
@@ -28,3 +29,6 @@ registerLiteralParser('json', parseJSONStringLiteral);
 
 // 注册Go解析器
 registerLiteralParser('go', parseGoStringLiteral);
+
+// 注册Rust解析器
+registerLiteralParser('rust', parseRustStringLiteral);

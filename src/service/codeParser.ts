@@ -1,5 +1,6 @@
 import Prism from 'prismjs';
 import { parseLiteral } from './literalParser';
+import { parseRawStringMarker } from './literalParser/rust';
 
 export interface TokenInfo {
     originText: string;
@@ -114,13 +115,22 @@ export function extractCodeTokens(
     ) {
         const tokenInfo = tokenInfos[0];
         const tokenOriginText = tokenInfo.originText;
-        let originText = selectionText;
+        let startMarker = '';
+        let endMarker = '';
+        let specialMarkers: {
+            startMarker: string;
+            endMarker: string;
+        } | undefined;
+        if (languageId === 'rust') {
+            specialMarkers = parseRawStringMarker(tokenOriginText);
+        }
         if (tokenInfo.StartOffset !== offset) {
-            originText = (tokenOriginText[0] || '') + originText;
+            startMarker = specialMarkers?.startMarker || tokenOriginText[0] || '';
         }
         if (tokenInfo.EndOffset !== endOffset) {
-            originText = originText + (tokenOriginText[tokenOriginText.length - 1] || '');
+            endMarker =  specialMarkers?.endMarker || tokenOriginText[tokenOriginText.length - 1] || '';
         }
+        const originText = startMarker + selectionText + endMarker;
         return [{
             originText: originText,
             text: parseLiteral(languageId, originText, tokenInfos[0].type),

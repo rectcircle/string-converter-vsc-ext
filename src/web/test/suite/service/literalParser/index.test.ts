@@ -1,6 +1,7 @@
 import './typescript.test';
 import './json.test';
 import './go.test';
+import './rust.test';
 import { parseLiteral } from '../../../../../service/literalParser/index';
 import assert from 'assert';
 
