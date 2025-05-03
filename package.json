@@ -2,6 +2,7 @@
   "name": "string-converter",
   "displayName": "String Converter",
   "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
+  "publisher": "rectcircle",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.64.0"
@@ -14,12 +15,7 @@
   ],
   "browser": "./dist/web/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "string-converter.showText",
-        "title": "Show Selected Text"
-      }
-    ]
+    "commands": []
   },
   "optionalDependencies": {
     "bierner.markdown-footnotes": "^0.1.1"

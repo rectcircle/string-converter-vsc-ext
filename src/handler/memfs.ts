@@ -22,5 +22,5 @@ class StrconvMemFileSystem implements vscode.TextDocumentContentProvider {
     }
 }
 
-export const strconvMemFileSystem = new StrconvMemFileSystem();
+export const strconvMemFileSystemProvider = new StrconvMemFileSystem();
 export const SCHEME = 'strconvmemfile';
