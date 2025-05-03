@@ -3,6 +3,7 @@ import { parseJSONStringLiteral } from './json';
 import { parseGoStringLiteral } from './go';
 import { parseRustStringLiteral } from './rust';
 import { parseJavaStringLiteral } from './java';
+import { parsePythonStringLiteral } from './python';
 import { isStringToken, StringLiteralParser, StringLiteralParseResult } from './interface';
 
 const parsers: Record<string, StringLiteralParser> = {};
@@ -35,3 +36,6 @@ registerLiteralParser('rust', parseRustStringLiteral);
 
 // 注册Java解析器
 registerLiteralParser('java', parseJavaStringLiteral);
+
+// 注册Python解析器
+registerLiteralParser('python', parsePythonStringLiteral);
