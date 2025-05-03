@@ -13,7 +13,7 @@ suite('src/service/stringConverter/jwt.ts', () => {
                     text: '123',
                     originText: '123'
                 };
-                assert.strictEqual(parser.match(tokenInfo), false);
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
             });
             
             test('should return false for invalid JWT strings', () => {
@@ -22,7 +22,7 @@ suite('src/service/stringConverter/jwt.ts', () => {
                     text: 'invalid.jwt.string',
                     originText: '"invalid.jwt.string"'
                 };
-                assert.strictEqual(parser.match(tokenInfo), false);
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
             });
             
             test('should return true for valid JWT strings', () => {
@@ -31,7 +31,7 @@ suite('src/service/stringConverter/jwt.ts', () => {
                     text: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
                     originText: '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"'
                 };
-                assert.strictEqual(parser.match(tokenInfo), true);
+                assert.strictEqual(parser.match(tokenInfo).matched, true);
             });
         });
         

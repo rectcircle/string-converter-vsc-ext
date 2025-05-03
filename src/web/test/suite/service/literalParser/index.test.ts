@@ -1,4 +1,5 @@
-import './typescript.test'
+import './typescript.test';
+import './json.test';
 import { parseLiteral } from '../../../../../service/literalParser/index';
 import assert from 'assert';
 

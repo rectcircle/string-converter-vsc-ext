@@ -1,5 +1,7 @@
-export function parseTypeScriptLiteral(originText: string, type: string): string {
-    if (!originText) return originText;
+export function parseTypeScriptStringLiteral(originText: string, type: string): string {
+    if (!originText) {
+        return originText;
+    }
 
     // 检查是否是字符串字面量
     if (type!=='string' && type!== 'template-string') {

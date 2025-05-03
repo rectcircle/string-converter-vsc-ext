@@ -1,0 +1,42 @@
+{
+  "testCases": [
+    {
+      "description": "普通字符串",
+      "strings": [
+        "hello world",
+        "double quoted string"
+      ]
+    },
+    {
+      "description": "转义字符",
+      "strings": [
+        "string with \\ backslash",
+        "string with \" quote",
+        "string with \n newline",
+        "string with \t tab",
+        "string with \b backspace",
+        "string with \f form feed",
+        "string with \r carriage return"
+      ]
+    },
+    {
+      "description": "Unicode转义",
+      "strings": [
+        "string with \u0061 unicode"
+      ]
+    },
+    {
+      "description": "无效转义",
+      "strings": [
+        "string with \q invalid escape"
+      ]
+    },
+    {
+      "description": "JWT字符串",
+      "strings": [
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjUwOTI1YjkzNmYzZWZjNTYzOGI5MjhkOTIzN2VlZmJhIn0.eyJleHAiOjE3NDYyMDI1MjcsInN1YiI6InVzZXJpZF8xIiwiaXNzIjoicmVjdGNpcmNsZSIsIm5iZiI6MTc0NjAyODgwMCwiaWF0IjoxNzQ2MDI4ODAwLCJqdGkiOiJ1dWlkLXh4eCIsImF1ZCI6ImF1ZGllbmNlIn0.0ZRNxzL82QSi0mmdPx6S4Sw9I0B1sfgd8G1cCoHAKXvFwck2ryWOzTjGIFctXlOI6Cl3Xhy5fHgXY9fWe15KBw"
+      ]
+    }
+  ]
+}

@@ -1,14 +1,11 @@
-import { parseTypeScriptLiteral } from './typescript';
+import { parseTypeScriptStringLiteral as parseTypeScriptStringLiteral } from './typescript';
+import { parseJSONStringLiteral } from './json';
 
-type LiteralParser = (originText: string, type: string) => string;
+type StringLiteralParser = (originText: string, type: string) => string;
 
-const parsers: Record<string, LiteralParser> = {};
+const parsers: Record<string, StringLiteralParser> = {};
 
-// 注册TypeScript/JavaScript解析器
-registerLiteralParser('typescript', parseTypeScriptLiteral);
-registerLiteralParser('javascript', parseTypeScriptLiteral);
-
-export function registerLiteralParser(languageId: string, parser: LiteralParser) {
+export function registerLiteralParser(languageId: string, parser: StringLiteralParser) {
     parsers[languageId] = parser;
 }
 
@@ -20,3 +17,10 @@ export function parseLiteral(languageId: string, originText: string, type: strin
     const parser = parsers[languageId];
     return parser ? parser(originText, type) : originText;
 }
+
+// 注册TypeScript/JavaScript解析器
+registerLiteralParser('typescript', parseTypeScriptStringLiteral);
+registerLiteralParser('javascript', parseTypeScriptStringLiteral);
+
+// 注册JSON解析器
+registerLiteralParser('json', parseJSONStringLiteral);

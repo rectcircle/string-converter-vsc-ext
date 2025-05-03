@@ -13,7 +13,7 @@ suite('src/service/stringConverter/default.ts', () => {
                     text: '123',
                     originText: '123'
                 };
-                assert.strictEqual(converter.match(tokenInfo), false);
+                assert.strictEqual(converter.match(tokenInfo).matched, false);
             });
 
             test('应该返回false当原始文本不包含转义字符', () => {
@@ -22,7 +22,7 @@ suite('src/service/stringConverter/default.ts', () => {
                     text: 'hello',
                     originText: 'hello'
                 };
-                assert.strictEqual(converter.match(tokenInfo), false);
+                assert.strictEqual(converter.match(tokenInfo).matched, false);
             });
 
             test('应该返回true当原始文本包含转义字符', () => {
@@ -31,7 +31,7 @@ suite('src/service/stringConverter/default.ts', () => {
                     text: 'hello\n',
                     originText: '\"hello\\n\"'
                 };
-                assert.strictEqual(converter.match(tokenInfo), true);
+                assert.strictEqual(converter.match(tokenInfo).matched, true);
             });
         });
 
@@ -42,7 +42,7 @@ suite('src/service/stringConverter/default.ts', () => {
                     text: 'hello',
                     originText: '\"hello\"'
                 };
-                assert.strictEqual(converter.convert(tokenInfo), 'hello');
+                assert.strictEqual(converter.convert(tokenInfo).result, 'hello');
             });
         });
     });
