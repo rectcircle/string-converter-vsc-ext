@@ -1,11 +1,13 @@
-export function parseGoStringLiteral(originText: string, type: string): string {
+import { StringLiteralParseResult } from "./interface";
+
+export function parseGoStringLiteral(originText: string, type: string): StringLiteralParseResult {
     if (!originText) {
-        return originText;
+        return { text: originText };
     }
 
     // 检查是否是字符串字面量
     if (type !== 'string') {
-        return originText;
+        return { text: originText };
     }
     
     // Go有两种字符串字面量：解释型字符串(""包裹)和原始字符串(``包裹)
@@ -13,7 +15,7 @@ export function parseGoStringLiteral(originText: string, type: string): string {
     const quoteChar = isRawString ? '`' : '"';
     
     if (originText[0] !== quoteChar || originText[originText.length - 1] !== quoteChar) {
-        return originText;
+        return { text: originText };
     }
     
     // 移除引号
@@ -21,7 +23,7 @@ export function parseGoStringLiteral(originText: string, type: string): string {
     
     // 原始字符串字面量不需要处理转义
     if (isRawString) {
-        return content;
+        return {text: content, startMarker: quoteChar, endMarker: quoteChar};
     }
     
     // 处理解释型字符串的转义
@@ -125,5 +127,5 @@ export function parseGoStringLiteral(originText: string, type: string): string {
             i++;
         }
     }
-    return result.join('');
+    return { text: result.join(''), startMarker: quoteChar, endMarker: quoteChar };
 }

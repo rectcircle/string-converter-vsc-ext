@@ -1,27 +1,30 @@
-export function parseRustStringLiteral(originText: string, type: string): string {
+import { StringLiteralParseResult } from "./interface";
+
+export function parseRustStringLiteral(originText: string, type: string): StringLiteralParseResult {
     if (!originText) {
-        return originText;
+        return { text: originText };
     }
 
     // 检查是否是字符串字面量
     if (type !== 'string') {
-        return originText;
+        return { text: originText };
     }
 
     // 检查是否是原生字符串
-    if (parseRawStringMarker(originText) !== undefined) {
-        return parseRawString(originText);
+    let rawMarkers = parseRawStringMarker(originText);
+    if (rawMarkers !== undefined) {
+        return { text: parseRawString(originText), ...rawMarkers };
     }
     // 处理转义字符
     if (originText.startsWith('"') && originText.endsWith('"')) {
-        return parseEscapedString(originText);
+        return { text: parseEscapedString(originText), startMarker: '"', endMarker: '"' };
     }
     // 处理字节字符串
     if (originText.startsWith('b"') && originText.endsWith('"')) {
-        return parseEscapedByteString(originText);
+        return { text: parseEscapedByteString(originText), startMarker: 'b"', endMarker: '"' };
     }
     // 有问题的字符串
-    return originText;
+    return { text: originText };
 }
 
 export function parseRawStringMarker(text: string): {

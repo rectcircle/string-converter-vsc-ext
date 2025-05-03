@@ -1,4 +1,5 @@
 import { TokenInfo } from "../codeParser";
+import { isStringToken } from "../literalParser/interface";
 import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import moment from "moment";
@@ -26,7 +27,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<JwtPayload> {
-        if (tokenInfo.type !== "string" && tokenInfo.type !== "template-string") {
+        if (!isStringToken(tokenInfo.type)) {
             return { matched: false };
         }
         try {

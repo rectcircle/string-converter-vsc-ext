@@ -72,5 +72,5 @@ export function rednerMarkdownToHover(params: MarkdownRenderParam[]): string {
         markdownParts.push(markdownContent);
     }
 
-    return markdownParts.join("\n\n");
+    return markdownParts.join("\n\n---\n\n");
 }

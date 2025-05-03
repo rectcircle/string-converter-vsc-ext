@@ -1,17 +1,21 @@
 import Prism from 'prismjs';
 import { parseLiteral } from './literalParser';
 import { parseRawStringMarker } from './literalParser/rust';
+import { isStringToken } from './literalParser/interface';
 
 export interface TokenInfo {
     originText: string;
     text: string;
     type: string;
+    startMarker?: string;
+    endMarker?: string;
 }
 
 interface internalTokenInfo extends TokenInfo   {
-    StartOffset: number,
-    EndOffset: number,
+    startOffset: number,
+    endOffset: number,
 } 
+
 function getTokenContent(token: Prism.Token | string): string {
     if (typeof token === 'string') {
         return token;
@@ -28,6 +32,38 @@ function getTokenContent(token: Prism.Token | string): string {
     return '';
 }
 
+function toTokenInfo(tokens: (string | Prism.Token)[], index: number, token: Prism.Token, languageId: string, startOffset: number, endOffset: number) : internalTokenInfo {
+    let originText = getTokenContent(token);
+    let type = token.type;
+    if (type === 'unknown') {
+        // 处理 java 某些特殊情况。
+        if (languageId === 'java' && index - 1 >= 0 && index + 2 < tokens.length) {
+            const prevToken = tokens[index - 1];
+            const nextToken = tokens[index + 1];
+            const nextNextToken = tokens[index + 2];
+            if (typeof prevToken !== 'string' && typeof nextToken !== 'string' && typeof nextNextToken === 'string'
+                && prevToken.type === 'string' && nextToken.type === 'string'
+                && prevToken.content === '""'
+                && nextToken.content === '""'
+                && nextNextToken === '"'
+            ) {
+                originText = '""' + originText + '"""';
+                type = 'triple-quoted-string';
+                startOffset = startOffset - 2;
+                endOffset = endOffset + 3;
+            }
+        }
+    }
+
+    return {
+        originText: originText,
+        type: type,
+        startOffset: startOffset,
+        endOffset: endOffset,
+        ...parseLiteral(languageId, originText, type),
+    };
+}
+
 export function extractCodeTokens(
     codeContent: string,
     languageId: string,
@@ -35,15 +71,14 @@ export function extractCodeTokens(
     endOffset?: number,  // 不包含
     selectionText?: string
 ): TokenInfo[] {
-    'abc'.substring(0, 1);
     // 检查语言支持
     // 导入 Prism 库
     if (!Prism.languages[languageId]) {
         if (endOffset !== undefined && selectionText) {
             return [{
                 originText: selectionText,
-                text: parseLiteral(languageId, selectionText, 'unknown'),
                 type: 'unknown',
+                ...parseLiteral(languageId, selectionText, 'unknown'),
             }];
         }
         return [];
@@ -56,7 +91,7 @@ export function extractCodeTokens(
     // tokens 类型为 (string | Prism.Token)[]， Prism.Token 是一个展平的结构。
     let currentEndOffset = 0;
     // console.log('===== tokens', tokens);
-    for (let token of tokens) {
+    for (let [index, token] of tokens.entries()) {
         const currentStartOffset = currentEndOffset;
         // 一般是空白字符。无需处理
         if (typeof token === 'string') {
@@ -83,26 +118,12 @@ export function extractCodeTokens(
             if (currentEndOffset < offset) {
                 continue;
             }
-            const originText = getTokenContent(token);
-            tokenInfos.push({
-                originText: originText,
-                text: parseLiteral(languageId, originText, token.type),
-                type: token.type,
-                StartOffset: currentStartOffset,
-                EndOffset: currentEndOffset,
-            });
+            tokenInfos.push(toTokenInfo(tokens, index, token, languageId, currentStartOffset, currentEndOffset));
             continue;
         }
         // 是光标位置
-        const originText = getTokenContent(token);
         if (offset >= currentStartOffset && offset <= currentEndOffset) {
-            tokenInfos.push({
-                originText: originText,
-                text: parseLiteral(languageId, originText, token.type),
-                type: token.type,
-                StartOffset: currentStartOffset,
-                EndOffset: currentEndOffset,
-            });
+            tokenInfos.push(toTokenInfo(tokens, index, token, languageId, currentStartOffset, currentEndOffset));
             break;
         }
     }
@@ -111,7 +132,7 @@ export function extractCodeTokens(
         selectionText !== undefined &&
         endOffset !== undefined &&
         tokenInfos.length === 1 &&
-        (tokenInfos[0].type === 'string' || tokenInfos[0].type ==='template-string')
+        isStringToken(tokenInfos[0].type)
     ) {
         const tokenInfo = tokenInfos[0];
         const tokenOriginText = tokenInfo.originText;
@@ -124,17 +145,17 @@ export function extractCodeTokens(
         if (languageId === 'rust') {
             specialMarkers = parseRawStringMarker(tokenOriginText);
         }
-        if (tokenInfo.StartOffset !== offset) {
+        if (tokenInfo.startOffset !== offset) {
             startMarker = specialMarkers?.startMarker || tokenOriginText[0] || '';
         }
-        if (tokenInfo.EndOffset !== endOffset) {
+        if (tokenInfo.endOffset !== endOffset) {
             endMarker =  specialMarkers?.endMarker || tokenOriginText[tokenOriginText.length - 1] || '';
         }
         const originText = startMarker + selectionText + endMarker;
         return [{
             originText: originText,
-            text: parseLiteral(languageId, originText, tokenInfos[0].type),
-            type: tokenInfos[0].type
+            type: tokenInfos[0].type,
+            ...parseLiteral(languageId, originText, tokenInfos[0].type),
         }];
     }
     return tokenInfos;

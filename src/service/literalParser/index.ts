@@ -2,8 +2,8 @@ import { parseTypeScriptStringLiteral as parseTypeScriptStringLiteral } from './
 import { parseJSONStringLiteral } from './json';
 import { parseGoStringLiteral } from './go';
 import { parseRustStringLiteral } from './rust';
-
-type StringLiteralParser = (originText: string, type: string) => string;
+import { parseJavaStringLiteral } from './java';
+import { isStringToken, StringLiteralParser, StringLiteralParseResult } from './interface';
 
 const parsers: Record<string, StringLiteralParser> = {};
 
@@ -11,13 +11,13 @@ export function registerLiteralParser(languageId: string, parser: StringLiteralP
     parsers[languageId] = parser;
 }
 
-export function parseLiteral(languageId: string, originText: string, type: string): string {
-    if (type !== 'string' && type !== 'template-string') {
-        return originText;
+export function parseLiteral(languageId: string, originText: string, type: string): StringLiteralParseResult {
+    if (!isStringToken(type)) {
+        return  { text: originText};
     }
     
     const parser = parsers[languageId];
-    return parser ? parser(originText, type) : originText;
+    return parser ? parser(originText, type) : { text: originText};
 }
 
 // 注册TypeScript/JavaScript解析器
@@ -32,3 +32,6 @@ registerLiteralParser('go', parseGoStringLiteral);
 
 // 注册Rust解析器
 registerLiteralParser('rust', parseRustStringLiteral);
+
+// 注册Java解析器
+registerLiteralParser('java', parseJavaStringLiteral);

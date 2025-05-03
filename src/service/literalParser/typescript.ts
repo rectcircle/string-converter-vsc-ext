@@ -1,21 +1,23 @@
-export function parseTypeScriptStringLiteral(originText: string, type: string): string {
+import { isStringToken, StringLiteralParseResult } from "./interface";
+
+export function parseTypeScriptStringLiteral(originText: string, type: string): StringLiteralParseResult {
     if (!originText) {
-        return originText;
+        return { text: originText };
     }
 
     // 检查是否是字符串字面量
-    if (type!=='string' && type!== 'template-string') {
-        return originText;
+    if (!isStringToken(type)) {
+        return { text: originText };
     }
     
     const quoteChar = originText[0];
     if (quoteChar !== '"' && quoteChar !== "'" && quoteChar !== '`') {
-        return originText;
+        return { text: originText };
     }
     
     // 检查是否匹配的引号
     if (originText[originText.length - 1] !== quoteChar) {
-        return originText;
+        return { text: originText };
     }
     
     // 移除引号
@@ -127,5 +129,5 @@ export function parseTypeScriptStringLiteral(originText: string, type: string): 
             i++;
         }
     }
-    return result.join('');
+    return { text: result.join(''), startMarker: quoteChar, endMarker: quoteChar };
 }
