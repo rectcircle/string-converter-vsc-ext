@@ -1,4 +1,5 @@
 import { TokenInfo } from "./codeParser";
+import { Base64BinaryParser, Base64StringParser } from "./stringConverter/base64";
 import { DefaultConverter } from "./stringConverter/default";
 import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
 import { JwtParser } from "./stringConverter/jwt";
@@ -51,5 +52,7 @@ export const stringConverterManager = new StringConverterManager();
 // 注册转换器
 stringConverterManager.register(new JwtParser());
 stringConverterManager.register(new TimestampParser());
+stringConverterManager.register(new Base64StringParser());
+stringConverterManager.register(new Base64BinaryParser());
 
 stringConverterManager.register(new DefaultConverter());

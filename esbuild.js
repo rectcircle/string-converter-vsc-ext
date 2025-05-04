@@ -77,6 +77,7 @@ async function main() {
 		define: {
 			global: 'globalThis',
 		},
+		inject: ['./polyfills.js'], // 注入 polyfill
 
 		plugins: [
 			prismjsPlugin({

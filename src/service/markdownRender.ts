@@ -28,7 +28,10 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
     // markdownContent += `\n\n## Result [📋](./Parse-the-JWT-String/copy)\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
     // ❌ 方案 3: 尝试类似于 hover MarkdownString 的 `command:xxx` 机制，不支持。
     // ✅ 方案 4: 利用 vscode:// 机制。
-    markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.string-converter/clipboard.writeString?${encodeURIComponent(JSON.stringify([result.result]))})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+    // trick: ( 符号也需要转义 %28 因为 markdown 遇到 ( 会解析异常。
+    // trick: ) 符号也需要转义 %29 因为 markdown 遇到 ) 会意外闭合。
+    const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+    markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.string-converter/clipboard.writeString?${args})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
 
     if (result.explain) {
         markdownContent += `\n\n## Explain\n\n${result.explain}`;
@@ -64,7 +67,8 @@ export function rednerMarkdownToHover(params: MarkdownRenderParam[]): string {
         const { token, matchResult, convertResult: result} = param;
 
         // 示例 command:_typescript.openJsDocLink?[{"file":{"path":"/Users/bytedance/Workspace/rectcircle/string-converter-vsc-ext/node_modules/@types/vscode/index.d.ts","scheme":"file"},"position":{"line":2961,"character":1}}]
-        let markdownContent = `### ${matchResult.meta.name} [$(copy)](command:string-converter.clipboard.writeString?${encodeURIComponent(JSON.stringify([result.result]))}) [$(open-editors-view-icon)](command:string-converter.codeAction.showMarkdown?${encodeURIComponent(JSON.stringify([token, matchResult, result]))})`;
+        const args = encodeURIComponent(JSON.stringify([result.result]));
+        let markdownContent = `### ${matchResult.meta.name} [$(copy)](command:string-converter.clipboard.writeString?${args}) [$(open-editors-view-icon)](command:string-converter.codeAction.showMarkdown?${encodeURIComponent(JSON.stringify([token, matchResult, result]))})`;
         markdownContent += `\n\n${CodeBlockMarker}${matchResult.meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
         if (result.explain) {
             markdownContent += `\n\n${result.explain}`;

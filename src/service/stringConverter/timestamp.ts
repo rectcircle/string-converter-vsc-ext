@@ -18,8 +18,18 @@ export class TimestampParser implements StringConverter<TimestampMatchResult> {
         specInfo: {
             name: "Timestamp",
             url: "https://en.wikipedia.org/wiki/Unix_time",
-            description: "Usually timestamp refers to Unix Timestamp. Unix time is a date and time representation widely used in computing. It measures time by the number of seconds that have elapsed since 00:00:00 UTC on 1 January 1970, the Unix epoch.\n\nNote that in some programming languages and environments (like JavaScript), timestamps are commonly represented in milliseconds rather than seconds. The converter automatically detects and handles both formats."
-            // TODO: 增加更多的参考链接。
+            description: "Usually timestamp refers to Unix Timestamp. Unix time is a date and time representation widely used in computing. It measures time by the number of seconds that have elapsed since 00:00:00 UTC on 1 January 1970, the Unix epoch.\n\nNote that in some programming languages and environments (like JavaScript), timestamps are commonly represented in milliseconds rather than seconds. The converter automatically detects and handles both formats.",
+            referenceLinks: [
+                {
+                    title: "Wikipedia - Unix time",
+                    url: "https://en.wikipedia.org/wiki/Unix_time"
+                },
+                {
+                    title: "百度百科 - unix时间戳",
+                    url: "https://baike.baidu.com/item/unix%E6%97%B6%E9%97%B4%E6%88%B3"
+                }
+                // TODO: 增加更多的参考链接。
+            ]
         }
     };
 
