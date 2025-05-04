@@ -5,6 +5,9 @@ export function isStringToken(type: string): boolean {
         type === 'triple-quoted-string';
 }
 
+export function isNumberToken(type: string): boolean {
+    return type === 'number';
+}
 
 export interface StringLiteralParseResult {
     text: string;

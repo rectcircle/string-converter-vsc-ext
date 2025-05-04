@@ -55,7 +55,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
         if (payload?.exp) {
             let exp = moment.unix(payload.exp);
             let now = moment();
-            let expStr =exp.format('YYYY-MM-DD HH:mm:ssZ')
+            let expStr =exp.format('YYYY-MM-DDTHH:mm:ssZ')
             explainList.push(`- Expiration time ([exp](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4)): \`${expStr}\`${exp.isBefore(now)? ' (**has expired**)' : ''}.`);
         }
         if (payload?.iss) {
@@ -66,12 +66,12 @@ export class JwtParser implements StringConverter<JwtPayload> {
         }
         if (payload?.nbf) {
             let nbf = moment.unix(payload.nbf);
-            let nbfStr = nbf.format('YYYY-MM-DD HH:mm:ssZ');
+            let nbfStr = nbf.format('YYYY-MM-DDTHH:mm:ssZ');
             explainList.push(`- Not Before ([nbf](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4)): \`${nbfStr}\`.`);
         }
         if (payload?.iat) {
             let iat = moment.unix(payload.iat);
-            let iatStr = iat.format('YYYY-MM-DD HH:mm:ssZ');
+            let iatStr = iat.format('YYYY-MM-DDTHH:mm:ssZ');
             explainList.push(`- Issued At ([iat](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.6): \`${iatStr}\`.`);
         }
         if (payload?.jti) {

@@ -2,6 +2,7 @@ import { TokenInfo } from "./codeParser";
 import { DefaultConverter } from "./stringConverter/default";
 import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
 import { JwtParser } from "./stringConverter/jwt";
+import { TimestampParser } from "./stringConverter/timestamp";
 
 export interface MatchResult {
     meta: StringConverterMeta;
@@ -49,4 +50,6 @@ export const stringConverterManager = new StringConverterManager();
 
 // 注册转换器
 stringConverterManager.register(new JwtParser());
+stringConverterManager.register(new TimestampParser());
+
 stringConverterManager.register(new DefaultConverter());
