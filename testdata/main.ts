@@ -52,3 +52,15 @@ console.log("5L2g5aW9");
 console.log("xOO6w6Os1eLKx9bQzsShow==");
 // png 图片
 console.log("iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAIklEQVQ4jWP8////fwYqAiZqGjZq4KiBowaOGjhq4FAyEACzFQQkuFxUKAAAAABJRU5ErkJggg==");
+
+// 测试 URL 编码字符串
+// 简单URL
+console.log("https://www.example.com");
+// 带查询参数的URL
+console.log("https://www.example.com/search?q=hello+world&lang=en");
+// 包含特殊字符的URL
+console.log("https://www.example.com/path%20with%20spaces?param1=value%201&param2=%E4%B8%AD%E6%96%87");
+// 纯查询字符串
+console.log("?name=John+Doe&age=30&city=New+York");
+// 二次编码
+console.log("%3Fq%3D%25E4%25B8%25AD%25E6%2596%2587%26lang%3Dzh");

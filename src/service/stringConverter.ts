@@ -4,6 +4,7 @@ import { DefaultConverter } from "./stringConverter/default";
 import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
 import { JwtParser } from "./stringConverter/jwt";
 import { TimestampParser } from "./stringConverter/timestamp";
+import { UrlParser } from "./stringConverter/url";
 
 export interface MatchResult {
     meta: StringConverterMeta;
@@ -54,5 +55,6 @@ stringConverterManager.register(new JwtParser());
 stringConverterManager.register(new TimestampParser());
 stringConverterManager.register(new Base64StringParser());
 stringConverterManager.register(new Base64BinaryParser());
+stringConverterManager.register(new UrlParser());
 
 stringConverterManager.register(new DefaultConverter());
