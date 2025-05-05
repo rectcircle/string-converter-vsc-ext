@@ -4,6 +4,10 @@ All notable changes to the "str-conv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.2]
+
+- Fix markdown footnotes extensions dependencies.
+
 ## [1.0.1]
 
 - Fix package json url error.
