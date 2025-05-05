@@ -1,5 +1,5 @@
 import { TokenInfo } from "../codeParser";
-import { isStringToken, isNumberToken } from "../literalParser/interface";
+import { isStringToken, isNumberToken, isUnknownToken } from "../literalParser/interface";
 import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
 import moment from "moment";
 
@@ -34,7 +34,7 @@ export class TimestampParser implements StringConverter<TimestampMatchResult> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<TimestampMatchResult> {
-        if (!isStringToken(tokenInfo.type) && !isNumberToken(tokenInfo.type)) {
+        if (!isStringToken(tokenInfo.type) && !isNumberToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
         

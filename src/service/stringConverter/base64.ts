@@ -1,5 +1,5 @@
 import { TokenInfo } from "../codeParser";
-import { isStringToken } from "../literalParser/interface";
+import { isStringToken, isUnknownToken } from "../literalParser/interface";
 import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
 import chardet from 'chardet';
 import iconv from 'iconv-lite';
@@ -39,21 +39,25 @@ export class Base64StringParser implements StringConverter<Base64MatchResult> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<Base64MatchResult> {
-        if (!isStringToken(tokenInfo.type)) {
+        if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
+        let text = tokenInfo.text;
+        if (isUnknownToken(tokenInfo.type)) {
+            text = text.trim();
+        }
         // 判断 base64 格式
-        if (!tokenInfo.text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
+        if (!text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
             return { matched: false };
         }
         // 判断是否是纯数字，直接返回，避免误判。
-        if (tokenInfo.text.match(/^\d+$/)) {
+        if (text.match(/^\d+$/)) {
             return { matched: false };
         }
         
         try {
             // Basic Base64 validation
-            const buffer = base64ToArrayBuffer(tokenInfo.text);
+            const buffer = base64ToArrayBuffer(text);
             // 猜测二进制文件类型，如果是二进制文件，不处理。
             const detectedBins = filetypeinfo(buffer);
             if (detectedBins.length > 0) {

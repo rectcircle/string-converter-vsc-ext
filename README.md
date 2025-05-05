@@ -1,65 +1,91 @@
-# string-converter README
+# string-converter VSCode Extension
 
-This is the README for your extension "string-converter". After writing up a brief description, we recommend including the following sections.
+[中文](./README.zh.md)
+
+This extension provides developers with efficient text processing tools, serving as an alternative to online services like https://jwt.io and https://www.epochconverter.com.
+
+Core features include:
+
+- Programming language literal parsing
+- JWT token parsing
+- Timestamp conversion
+- Base64 decoding
+- URL parsing
+- JSON formatting
+
+All features are deeply integrated into the IDE, displaying results through hover popups or side windows, with one-click copy capability for native IDE experience:
+
+![demo](images/string-converter-demo.png)
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Parse Programming Language Literals
 
-For example if there is an image subfolder under your extension project workspace:
+![parse-lang-literal](images/string-converter-lang-literal.png)
 
-\!\[feature X\]\(images/feature-x.png\)
+Supports parsing literals from these programming languages:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- [x] Go
+- [x] Java
+- [x] JSON
+- [x] Python
+- [x] Rust
+- [x] TypeScript / JavaScript
 
-## Requirements
+More languages will be supported gradually. Contributions are welcome.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### JWT Token Parsing
+
+![parse-jwt](images/string-converter-parse-jwt.png)
+
+### Timestamp Conversion
+
+![parse-timestamp](images/string-converter-parse-timestamp.png)
+
+### Base64 Decoding
+
+Detects Base64 content format and provides decoding results.
+
+- For string type: detects string encoding rules (supports UTF-8, GBK, etc.)
+
+    ![base64-string](/images/string-converter-parse-base64-string.png)
+
+- For binary type: detects magic numbers and outputs in xxd-like format
+
+   ![base64-binary](/images/string-converter-parse-base64-binary.png)
+
+### URL Parsing
+
+Supports URL and query string parsing.
+
+![parse-url](images/string-converter-parse-url.png)
+
+### JSON Formatting
+
+![json-format](images/string-converter-json-format.png)
+
+### More Features
+
+Additional features will be added as needed. Contributions are welcome.
+
+## System Requirements
+
+This extension is published as a Web Extension, supporting:
+- Desktop
+- Remote
+- Browser
+- VSCode Web
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+None currently.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Future updates may include converter toggles, priorities, and specific configurations based on demand.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None currently.
 
-## Release Notes
+## Changelog
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+See: [CHANGELOG.md](CHANGELOG.md)

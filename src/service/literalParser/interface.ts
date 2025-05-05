@@ -9,6 +9,10 @@ export function isNumberToken(type: string): boolean {
     return type === 'number';
 }
 
+export function isUnknownToken(type: string): boolean {
+    return type === 'unknown';
+}
+
 export interface StringLiteralParseResult {
     text: string;
     startMarker?: string, 

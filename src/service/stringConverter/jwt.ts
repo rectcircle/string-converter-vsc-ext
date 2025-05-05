@@ -1,5 +1,5 @@
 import { TokenInfo } from "../codeParser";
-import { isStringToken } from "../literalParser/interface";
+import { isStringToken, isUnknownToken } from "../literalParser/interface";
 import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import moment from "moment";
@@ -27,7 +27,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<JwtPayload> {
-        if (!isStringToken(tokenInfo.type)) {
+        if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
         try {
@@ -55,7 +55,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
         if (payload?.exp) {
             let exp = moment.unix(payload.exp);
             let now = moment();
-            let expStr =exp.format('YYYY-MM-DDTHH:mm:ssZ')
+            let expStr =exp.format('YYYY-MM-DDTHH:mm:ssZ');
             explainList.push(`- Expiration time ([exp](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4)): \`${expStr}\`${exp.isBefore(now)? ' (**has expired**)' : ''}.`);
         }
         if (payload?.iss) {
@@ -85,4 +85,4 @@ export class JwtParser implements StringConverter<JwtPayload> {
             explain: explainList.join("\n"),
         };
     }
-}
+};

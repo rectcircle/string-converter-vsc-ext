@@ -18,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const clipboardWriteStringCommand = vscode.commands.registerCommand('string-converter.clipboard.writeString', strconvClipboardWriteString);
 
-	const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
+	// const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
 
 	const contentProvider = vscode.workspace.registerTextDocumentContentProvider(SCHEME, strconvMemFileSystemProvider);
 
@@ -29,7 +29,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		codeActionShowMarkdownCommand, 
 		clipboardWriteStringCommand, 
-		codeActionProvider, 
+		// codeActionProvider, 
 		contentProvider, 
 		hoverProvider, 
 		uriHandler

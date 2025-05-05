@@ -674,4 +674,4 @@ const unicodeNameAliasesMap: Record<string, number|undefined> = {
     "VS254": 0xE01ED,
     "VS255": 0xE01EE,
     "VS256": 0xE01EF,
-}
+};

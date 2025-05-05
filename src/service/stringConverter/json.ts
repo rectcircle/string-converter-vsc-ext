@@ -1,5 +1,5 @@
 import { TokenInfo } from "../codeParser";
-import { isStringToken } from "../literalParser/interface";
+import { isStringToken, isUnknownToken } from "../literalParser/interface";
 import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
 
 export class JsonParser implements StringConverter<any> {
@@ -21,9 +21,9 @@ export class JsonParser implements StringConverter<any> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<any> {
-        // if (!isStringToken(tokenInfo.type)) {
-        //     return { matched: false };
-        // }
+        if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
+            return { matched: false };
+        }
         const textTrimStart = tokenInfo.text.trimStart();
         if (!textTrimStart.startsWith('{') && !textTrimStart.startsWith('[')) {
             return { matched: false };

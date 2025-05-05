@@ -2,14 +2,39 @@
   "name": "string-converter",
   "displayName": "String Converter",
   "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
-  "publisher": "rectcircle",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "publisher": "Rectcircle",
+  "author": {
+		"name": "Rectcircle",
+		"email": "rectcircle96@gmail.com",
+		"url": "https://www.rectcircle.cn/"
+	},
   "engines": {
     "vscode": "^1.64.0"
   },
   "categories": [
     "Other"
   ],
+  "keywords": [
+		"jwt",
+		"timestamp",
+		"base64",
+		"url",
+		"json",
+    "go",
+    "java",
+    "python",
+    "rust",
+    "typescript",
+    "javascript"
+	],
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "images/icon.png",
+  "homepage": "https://github.com/rectcircle/string-converter-vsc-ext#readme",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rectcircle/string-converter-vsc-ext.git"
+	},
   "activationEvents": [
     "*"
   ],

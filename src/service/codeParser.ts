@@ -132,7 +132,7 @@ export function extractCodeTokens(
         selectionText !== undefined &&
         endOffset !== undefined &&
         tokenInfos.length === 1 &&
-        isStringToken(tokenInfos[0].type)
+        (isStringToken(tokenInfos[0].type) || tokenInfos[0].type === 'unknown' )
     ) {
         const tokenInfo = tokenInfos[0];
         const tokenOriginText = tokenInfo.originText;
@@ -146,10 +146,10 @@ export function extractCodeTokens(
             specialMarkers = parseRawStringMarker(tokenOriginText);
         }
         if (tokenInfo.startOffset !== offset) {
-            startMarker = specialMarkers?.startMarker || tokenOriginText[0] || '';
+            startMarker = specialMarkers?.startMarker || '';
         }
         if (tokenInfo.endOffset !== endOffset) {
-            endMarker =  specialMarkers?.endMarker || tokenOriginText[tokenOriginText.length - 1] || '';
+            endMarker =  specialMarkers?.endMarker || '';
         }
         const originText = startMarker + selectionText + endMarker;
         return [{

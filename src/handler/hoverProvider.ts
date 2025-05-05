@@ -8,8 +8,17 @@ export const strconvHoverProvider : vscode.HoverProvider = {
     provideHover(document, position, token) {
         // 获取 tokens
         const codeContent = document.getText();
-        const startOffset = document.offsetAt(position);
-        const tokens = extractCodeTokens(codeContent, document.languageId, startOffset, undefined, undefined);
+        let startOffset: number | undefined;
+        let endOffset: number | undefined;
+        let selectionText: string | undefined;
+        if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document === document && !vscode.window.activeTextEditor.selection.isEmpty) {
+           startOffset = document.offsetAt( vscode.window.activeTextEditor.selection.start);
+           endOffset = document.offsetAt( vscode.window.activeTextEditor.selection.end);
+           selectionText = document.getText(vscode.window.activeTextEditor.selection);
+        } else {
+            startOffset = document.offsetAt(position);
+        }
+        const tokens = extractCodeTokens(codeContent, document.languageId, startOffset, endOffset, selectionText);
 
         // 解析 token
         const results = tokens.flatMap(token => {
