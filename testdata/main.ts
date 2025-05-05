@@ -64,3 +64,23 @@ console.log("https://www.example.com/path%20with%20spaces?param1=value%201&param
 console.log("?name=John+Doe&age=30&city=New+York");
 // 二次编码
 console.log("%3Fq%3D%25E4%25B8%25AD%25E6%2596%2587%26lang%3Dzh");
+
+
+// 测试JSON字符串
+// 有效JSON
+console.log('{"name":"test"}');
+console.log('{"array":[1,2,3]}');
+console.log('{"nested":{"key":"value"}}');
+console.log('["one","two","three"]');
+// 无效JSON
+console.log('invalid json');
+console.log('{"name":"test"'); // 缺少闭合括号
+console.log('{"name":test}'); // 缺少引号
+console.log('{"name":"test",}'); // 尾部逗号
+// 边缘情况
+console.log('{}'); // 空对象
+console.log('[]'); // 空数组
+console.log('{"":""}'); // 空键值
+console.log('{"key":null}'); // null值
+console.log('{"key":true}'); // 布尔值
+console.log('{"key":123}'); // 数字值

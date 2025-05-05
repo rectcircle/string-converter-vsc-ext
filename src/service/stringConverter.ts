@@ -2,6 +2,7 @@ import { TokenInfo } from "./codeParser";
 import { Base64BinaryParser, Base64StringParser } from "./stringConverter/base64";
 import { DefaultConverter } from "./stringConverter/default";
 import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
+import { JsonParser } from "./stringConverter/json";
 import { JwtParser } from "./stringConverter/jwt";
 import { TimestampParser } from "./stringConverter/timestamp";
 import { UrlParser } from "./stringConverter/url";
@@ -57,4 +58,5 @@ stringConverterManager.register(new Base64StringParser());
 stringConverterManager.register(new Base64BinaryParser());
 stringConverterManager.register(new UrlParser());
 
+stringConverterManager.register(new JsonParser());
 stringConverterManager.register(new DefaultConverter());

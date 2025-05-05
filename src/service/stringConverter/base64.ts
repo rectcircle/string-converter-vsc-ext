@@ -42,6 +42,10 @@ export class Base64StringParser implements StringConverter<Base64MatchResult> {
         if (!isStringToken(tokenInfo.type)) {
             return { matched: false };
         }
+        // 判断 base64 格式
+        if (!tokenInfo.text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
+            return { matched: false };
+        }
         // 判断是否是纯数字，直接返回，避免误判。
         if (tokenInfo.text.match(/^\d+$/)) {
             return { matched: false };
