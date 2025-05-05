@@ -48,11 +48,11 @@ Detects Base64 content format and provides decoding results.
 
 - For string type: detects string encoding rules (supports UTF-8, GBK, etc.)
 
-    ![base64-string](/images/str-conv-parse-base64-string.png)
+    ![base64-string](images/str-conv-parse-base64-string.png)
 
 - For binary type: detects magic numbers and outputs in xxd-like format
 
-   ![base64-binary](/images/str-conv-parse-base64-binary.png)
+   ![base64-binary](images/str-conv-parse-base64-binary.png)
 
 ### URL Parsing
 

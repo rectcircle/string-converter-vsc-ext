@@ -48,11 +48,11 @@
 
 - 针对字符串类型，探测字符串的编码规则，支持 UTF-8、GBK 等。
 
-    ![base64-string](/images/str-conv-parse-base64-string.png)
+    ![base64-string](images/str-conv-parse-base64-string.png)
 
 - 针对二进制类型，探测魔术，使用类似 xxd 的格式输出。
 
-   ![base64-binary](/images/str-conv-parse-base64-binary.png)
+   ![base64-binary](images/str-conv-parse-base64-binary.png)
 
 ### URL 解析
 

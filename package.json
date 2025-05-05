@@ -2,7 +2,7 @@
   "name": "str-conv",
   "displayName": "String Converter",
   "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "Rectcircle",
   "author": {
 		"name": "Rectcircle",
@@ -30,10 +30,10 @@
 	],
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/icon.png",
-  "homepage": "https://github.com/rectcircle/str-conv-vsc-ext#readme",
+  "homepage": "https://github.com/rectcircle/string-converter-vsc-ext#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/rectcircle/str-conv-vsc-ext.git"
+		"url": "https://github.com/rectcircle/string-converter-vsc-ext.git"
 	},
   "activationEvents": [
     "*"
