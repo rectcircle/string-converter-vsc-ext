@@ -1,6 +1,6 @@
 # string-converter VSCode Extension
 
-[中文](./README.zh.md)
+[中文](./README_zh-CN.md)
 
 This extension provides developers with efficient text processing tools, serving as an alternative to online services like https://jwt.io and https://www.epochconverter.com.
 
