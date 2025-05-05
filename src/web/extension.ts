@@ -12,11 +12,11 @@ import { strconvUriHandler } from '../handler/uriHandler';
 export async function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "string-converter" is now active in the web extension host!');
+	console.log('Congratulations, your extension "str-conv" is now active in the web extension host!');
 
-	const codeActionShowMarkdownCommand = vscode.commands.registerCommand('string-converter.codeAction.showMarkdown', strconvCodeActionShowMarkdown);
+	const codeActionShowMarkdownCommand = vscode.commands.registerCommand('str-conv.codeAction.showMarkdown', strconvCodeActionShowMarkdown);
 
-	const clipboardWriteStringCommand = vscode.commands.registerCommand('string-converter.clipboard.writeString', strconvClipboardWriteString);
+	const clipboardWriteStringCommand = vscode.commands.registerCommand('str-conv.clipboard.writeString', strconvClipboardWriteString);
 
 	// const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
 

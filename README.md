@@ -1,4 +1,4 @@
-# string-converter VSCode Extension
+# String Converter VSCode Extension
 
 [中文](./README_zh-CN.md)
 
@@ -15,13 +15,13 @@ Core features include:
 
 All features are deeply integrated into the IDE, displaying results through hover popups or side windows, with one-click copy capability for native IDE experience:
 
-![demo](images/string-converter-demo.png)
+![demo](images/str-conv-demo.png)
 
 ## Features
 
 ### Parse Programming Language Literals
 
-![parse-lang-literal](images/string-converter-lang-literal.png)
+![parse-lang-literal](images/str-conv-lang-literal.png)
 
 Supports parsing literals from these programming languages:
 
@@ -36,11 +36,11 @@ More languages will be supported gradually. Contributions are welcome.
 
 ### JWT Token Parsing
 
-![parse-jwt](images/string-converter-parse-jwt.png)
+![parse-jwt](images/str-conv-parse-jwt.png)
 
 ### Timestamp Conversion
 
-![parse-timestamp](images/string-converter-parse-timestamp.png)
+![parse-timestamp](images/str-conv-parse-timestamp.png)
 
 ### Base64 Decoding
 
@@ -48,21 +48,21 @@ Detects Base64 content format and provides decoding results.
 
 - For string type: detects string encoding rules (supports UTF-8, GBK, etc.)
 
-    ![base64-string](/images/string-converter-parse-base64-string.png)
+    ![base64-string](/images/str-conv-parse-base64-string.png)
 
 - For binary type: detects magic numbers and outputs in xxd-like format
 
-   ![base64-binary](/images/string-converter-parse-base64-binary.png)
+   ![base64-binary](/images/str-conv-parse-base64-binary.png)
 
 ### URL Parsing
 
 Supports URL and query string parsing.
 
-![parse-url](images/string-converter-parse-url.png)
+![parse-url](images/str-conv-parse-url.png)
 
 ### JSON Formatting
 
-![json-format](images/string-converter-json-format.png)
+![json-format](images/str-conv-json-format.png)
 
 ### More Features
 

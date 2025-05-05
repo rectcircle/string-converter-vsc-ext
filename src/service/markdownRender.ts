@@ -31,7 +31,7 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
     // trick: ( 符号也需要转义 %28 因为 markdown 遇到 ( 会解析异常。
     // trick: ) 符号也需要转义 %29 因为 markdown 遇到 ) 会意外闭合。
     const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
-    markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.string-converter/clipboard.writeString?${args})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+    markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.str-conv/clipboard.writeString?${args})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
 
     if (result.explain) {
         markdownContent += `\n\n## Explain\n\n${result.explain}`;
@@ -66,9 +66,9 @@ export function rednerMarkdownToHover(params: MarkdownRenderParam[]): string {
     for (const param of params) {
         const { token, matchResult, convertResult: result} = param;
 
-        // 示例 command:_typescript.openJsDocLink?[{"file":{"path":"/Users/bytedance/Workspace/rectcircle/string-converter-vsc-ext/node_modules/@types/vscode/index.d.ts","scheme":"file"},"position":{"line":2961,"character":1}}]
+        // 示例 command:_typescript.openJsDocLink?[{"file":{"path":"/Users/bytedance/Workspace/rectcircle/str-conv-vsc-ext/node_modules/@types/vscode/index.d.ts","scheme":"file"},"position":{"line":2961,"character":1}}]
         const args = encodeURIComponent(JSON.stringify([result.result]));
-        let markdownContent = `### ${matchResult.meta.name} [$(copy)](command:string-converter.clipboard.writeString?${args}) [$(open-editors-view-icon)](command:string-converter.codeAction.showMarkdown?${encodeURIComponent(JSON.stringify([token, matchResult, result]))})`;
+        let markdownContent = `### ${matchResult.meta.name} [$(copy)](command:str-conv.clipboard.writeString?${args}) [$(open-editors-view-icon)](command:str-conv.codeAction.showMarkdown?${encodeURIComponent(JSON.stringify([token, matchResult, result]))})`;
         markdownContent += `\n\n${CodeBlockMarker}${matchResult.meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
         if (result.explain) {
             markdownContent += `\n\n${result.explain}`;

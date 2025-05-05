@@ -32,7 +32,7 @@ export const strconvCodeActionProvider: vscode.CodeActionProvider<CodeActionWith
         },
         resolveCodeAction: async (action: CodeActionWithData, token: vscode.CancellationToken) => {
             action.command = {
-                command: 'string-converter.codeAction.showMarkdown',
+                command: 'str-conv.codeAction.showMarkdown',
                 title: action.data.matchResult.meta.name,
                 arguments: [action.data.token, action.data.matchResult],
             };
