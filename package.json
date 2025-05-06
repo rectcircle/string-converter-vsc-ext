@@ -2,7 +2,7 @@
   "name": "str-conv",
   "displayName": "String Converter",
   "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "Rectcircle",
   "author": {
 		"name": "Rectcircle",
@@ -43,7 +43,6 @@
     "commands": []
   },
   "extensionDependencies": [
-    "bierner.markdown-footnotes"
   ],
   "scripts": {
     "test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/web/test/suite/extensionTests.js",

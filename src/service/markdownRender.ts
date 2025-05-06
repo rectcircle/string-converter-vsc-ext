@@ -43,7 +43,7 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
                 return link.url === meta?.specInfo?.url;
             });
             if (idx !== undefined && idx !== -1) {
-                markdownContent += `\n\n## ${meta.specInfo.name}  [^${idx + 1}]`;
+                markdownContent += `\n\n## ${meta.specInfo.name}  <sup>[[${idx + 1}]](#reference_links_${idx + 1})</sup>`;
             } else {
                 markdownContent += `\n\n## [${meta.specInfo.name}](${meta.specInfo.url})`;
             }
@@ -53,7 +53,7 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
         markdownContent += `\n\n### Description\n\n${meta.specInfo.description}`;
         if (meta.specInfo.referenceLinks) {
             markdownContent += `\n\n### Reference Links\n\n${meta.specInfo.referenceLinks.map((link, index) => {
-                return `[^${index + 1}]: [${link.title}](${link.url})[^${index + 1}]`;
+                return `${index + 1}. [${link.title}](${link.url}) <a href="#reference_links_${index + 1}" id="reference_links_${index + 1}" >↩︎</a>`;
             }).join('\n')}`;
         }
     }
