@@ -13,6 +13,7 @@
 		// 为了不报错，关掉库类型检查。
 		"skipLibCheck": true, 
 		"strict": true,   /* enable all strict type-checking options */
+		"allowSyntheticDefaultImports": true, /* Allow default imports from modules with no default export */
 		/* Additional Checks */
 		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
 		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */

@@ -73,6 +73,14 @@ suite('src/service/stringConverter/base64.ts', () => {
                 };
                 assert.strictEqual(parser.match(tokenInfo).matched, false);
             });
+            test('应该返回false这是英文单词', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'test',
+                    originText: '"test"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
         });
     
         suite('convert()', () => {

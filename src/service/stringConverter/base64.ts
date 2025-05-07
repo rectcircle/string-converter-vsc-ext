@@ -5,6 +5,10 @@ import chardet from 'chardet';
 import iconv from 'iconv-lite';
 import { filetypeinfo } from 'magic-bytes.js';
 import { hexy } from 'hexy';
+import spelling from 'spelling';
+import enDictData from 'spelling/dictionaries/en_US';
+
+const enDictSpelling = spelling(enDictData);
 
 interface Base64MatchResult {
     buffer: Uint8Array;
@@ -18,6 +22,33 @@ function base64ToArrayBuffer(base64: string) {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes;
+}
+
+// 快速判断是否是 base64 格式，如果不是，则直接返回 false。返回 true 也不一定是 base64。
+function quickExcludeBase64(tokenInfo: TokenInfo) {
+    if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
+        return false;
+    }
+    let text = tokenInfo.text;
+    if (isUnknownToken(tokenInfo.type)) {
+        text = text.trim();
+    }
+    // 判断 base64 格式
+    if (!text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
+        return false;
+    }
+    // 判断是否是纯数字，直接返回，避免误判。
+    if (text.match(/^\d+$/)) {
+        return false;
+    }
+    // 英文单词，不应该被识别为 base64。
+    if (text.length <= 23) { // 词典收录的最长单词是 23 个字符。
+        const result = enDictSpelling.lookup(text, {suggest: false});
+        if (result.found) {
+            return false;
+        }
+    }
+    return true;
 }
 
 export class Base64StringParser implements StringConverter<Base64MatchResult> {
@@ -39,22 +70,11 @@ export class Base64StringParser implements StringConverter<Base64MatchResult> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<Base64MatchResult> {
-        if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
-            return { matched: false };
-        }
         let text = tokenInfo.text;
-        if (isUnknownToken(tokenInfo.type)) {
-            text = text.trim();
-        }
-        // 判断 base64 格式
-        if (!text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
+        if (quickExcludeBase64(tokenInfo) === false) {
             return { matched: false };
         }
-        // 判断是否是纯数字，直接返回，避免误判。
-        if (text.match(/^\d+$/)) {
-            return { matched: false };
-        }
-        
+
         try {
             // Basic Base64 validation
             const buffer = base64ToArrayBuffer(text);
@@ -127,11 +147,7 @@ export class Base64BinaryParser implements StringConverter<Base64MatchResult> {
     };
 
     match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<Base64MatchResult> {
-        if (!isStringToken(tokenInfo.type)) {
-            return { matched: false };
-        }
-        // 判断是否是纯数字，直接返回，避免误判。
-        if (tokenInfo.text.match(/^\d+$/)) {
+        if (quickExcludeBase64(tokenInfo) === false) {
             return { matched: false };
         }
         
