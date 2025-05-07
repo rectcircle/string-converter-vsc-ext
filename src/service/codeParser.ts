@@ -146,10 +146,10 @@ export function extractCodeTokens(
             specialMarkers = parseRawStringMarker(tokenOriginText);
         }
         if (tokenInfo.startOffset !== offset) {
-            startMarker = specialMarkers?.startMarker || '';
+            startMarker = tokenInfo?.startMarker || '';
         }
         if (tokenInfo.endOffset !== endOffset) {
-            endMarker =  specialMarkers?.endMarker || '';
+            endMarker =  tokenInfo?.endMarker || '';
         }
         const originText = startMarker + selectionText + endMarker;
         return [{

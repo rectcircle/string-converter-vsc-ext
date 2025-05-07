@@ -4,6 +4,11 @@ All notable changes to the "str-conv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [Unreleased]
+
+- Fix url match bug.
+- Fix a selection unit test failure.
+
 ## [1.0.3]
 
 - Remove markdown footnotes extensions dependencies.

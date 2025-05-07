@@ -49,8 +49,6 @@ export class UrlParser implements StringConverter<URLMatchByProduct> {
                         url: parseURL(tokenInfo.text),
                     }
                  };   
-            } else {
-                return { matched: false };
             }
         }
 
