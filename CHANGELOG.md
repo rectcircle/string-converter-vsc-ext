@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Fix url match bug.
 - Fix a selection unit test failure.
 - Fix english word match to base64 bug.
+- Fix hover special char `)` render bug.
 
 ## [1.0.3]
 

@@ -52,6 +52,8 @@ console.log("5L2g5aW9");
 console.log("xOO6w6Os1eLKx9bQzsShow==");
 // png 图片
 console.log("iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAIklEQVQ4jWP8////fwYqAiZqGjZq4KiBowaOGjhq4FAyEACzFQQkuFxUKAAAAABJRU5ErkJggg==");
+// aaaa)aaaa)
+console.log("YWFhYSlhYWFhKQ==")
 // 英文单词长度为 4 的倍数，不应该被识别为 base64
 console.log("test");
 

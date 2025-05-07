@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { extractCodeTokens } from '../service/codeParser';
 import { stringConverterManager } from '../service/stringConverter';
-import { MarkdownRenderParam, rednerMarkdownToHover } from '../service/markdownRender';
+import { MarkdownRenderParam, renderMarkdownToHover } from '../service/markdownRender';
 
 
 export const strconvHoverProvider : vscode.HoverProvider = {
@@ -43,7 +43,7 @@ export const strconvHoverProvider : vscode.HoverProvider = {
         }
 
         // 渲染成 markdown
-        const content = new vscode.MarkdownString(rednerMarkdownToHover(results), true);
+        const content = new vscode.MarkdownString(renderMarkdownToHover(results), true);
         content.isTrusted = true;
         const hover = new vscode.Hover(content);
         return hover;
