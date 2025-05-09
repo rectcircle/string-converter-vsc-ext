@@ -24,6 +24,46 @@ function base64ToArrayBuffer(base64: string) {
     return bytes;
 }
 
+// Helper functions for word splitting
+function isLowerCase(char: string): boolean {
+    const charCode = char.charCodeAt(0);
+    return charCode >= 97 && charCode <= 122; // 'a' to 'z'
+}
+
+function isUpperCase(char: string): boolean {
+    const charCode = char.charCodeAt(0);
+    return charCode >= 65 && charCode <= 90; // 'A' to 'Z'
+}
+
+// Splits a string by camelCase and PascalCase.
+// e.g., "camelCaseString" -> ["camel", "Case", "String"]
+// e.g., "HTTPRequestHandler" -> ["HTTP", "Request", "Handler"]
+function splitCase(s: string): string[] {
+    const words: string[] = [];
+    if (!s) {
+        return words;
+    }
+    let wordStart = 0;
+    for (let i = 0; i < s.length; i++) {
+        const char = s[i];
+        const nextChar = s[i + 1];
+
+        // Split before an uppercase letter if it's preceded by a lowercase letter
+        if (i > wordStart && isUpperCase(char) && s[i-1] && isLowerCase(s[i-1])) {
+            words.push(s.substring(wordStart, i));
+            wordStart = i;
+        } 
+        // Split before an uppercase letter if it's part of a sequence like 'AAa' (e.g. HTTPServer -> HTTP, Server)
+        // This means current char is Upper, previous is Upper, next is Lower
+        else if (i > wordStart && isUpperCase(char) && nextChar && isLowerCase(nextChar) && s[i-1] && isUpperCase(s[i-1])) {
+            words.push(s.substring(wordStart, i));
+            wordStart = i;
+        }
+    }
+    words.push(s.substring(wordStart));
+    return words.filter(w => w.length > 0);
+}
+
 // 快速判断是否是 base64 格式，如果不是，则直接返回 false。返回 true 也不一定是 base64。
 function quickExcludeBase64(tokenInfo: TokenInfo) {
     if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
@@ -33,6 +73,11 @@ function quickExcludeBase64(tokenInfo: TokenInfo) {
     if (isUnknownToken(tokenInfo.type)) {
         text = text.trim();
     }
+
+    if (text.length === 0) {
+        return false;
+    }
+
     // 判断 base64 格式
     if (!text.match(/^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$/)) {
         return false;
@@ -41,13 +86,25 @@ function quickExcludeBase64(tokenInfo: TokenInfo) {
     if (text.match(/^\d+$/)) {
         return false;
     }
+
+    // 常见的标识符类型
     // 英文单词，不应该被识别为 base64。
-    if (text.length <= 23) { // 词典收录的最长单词是 23 个字符。
-        const result = enDictSpelling.lookup(text, {suggest: false});
-        if (result.found) {
-            return false;
+    // For text < 256 chars, split by case and underscore, check parts.
+    if (text.length < 256) {
+        const words = splitCase(text);
+        for (const word of words) {
+            if (word.length < 4) {
+                // 特殊处理，短单词，不应该被识别为 base64，防止误排除。
+                continue;
+            }
+            // `word` is already lowercased and length-filtered by splitByCaseAndUnderscore
+            const lookupResult = enDictSpelling.lookup(word, {suggest: false});
+            if (lookupResult.found) {
+                return false; // Found a valid English word part
+            }
         }
     }
+
     return true;
 }
 

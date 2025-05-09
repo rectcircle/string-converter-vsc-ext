@@ -56,6 +56,8 @@ console.log("iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAIklEQVQ4jWP8////fwY
 console.log("YWFhYSlhYWFhKQ==")
 // 英文单词长度为 4 的倍数，不应该被识别为 base64
 console.log("test");
+// 大小驼峰、下划线分割标识符，长度为 4 的倍数的标识符单测不应该被识别为 base64
+console.log("TestAbcd");
 
 
 // 测试 URL 编码字符串

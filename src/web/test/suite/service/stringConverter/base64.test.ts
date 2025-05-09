@@ -81,6 +81,60 @@ suite('src/service/stringConverter/base64.ts', () => {
                 };
                 assert.strictEqual(parser.match(tokenInfo).matched, false);
             });
+
+            test('应该返回false这是标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'TestAbcd',
+                    originText: '"TestAbcd"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
+            
+            test('应该返回false这是camelCase标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'camelCaseIdentifier',
+                    originText: '"camelCaseIdentifier"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
+
+            test('应该返回false这是PascalCase标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'PascalCaseIdentifier',
+                    originText: '"PascalCaseIdentifier"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
+
+            test('应该返回false这是snake_case标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'snake_case_identifier',
+                    originText: '"snake_case_identifier"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
+
+            test('应该返回false这是kebab-case标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'kebab-case-identifier',
+                    originText: '"kebab-case-identifier"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
+
+            test('应该返回false这是混合格式标识符', () => {
+                const tokenInfo: TokenInfo = {
+                    type: 'string',
+                    text: 'HTTP_RequestHandlerV2',
+                    originText: '"HTTP_RequestHandlerV2"'
+                };
+                assert.strictEqual(parser.match(tokenInfo).matched, false);
+            });
         });
     
         suite('convert()', () => {
