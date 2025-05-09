@@ -4,6 +4,7 @@ import { parseGoStringLiteral } from './go';
 import { parseRustStringLiteral } from './rust';
 import { parseJavaStringLiteral } from './java';
 import { parsePythonStringLiteral } from './python';
+import { parseCppStringLiteral } from './cpp';
 import { isStringToken, StringLiteralParser, StringLiteralParseResult } from './interface';
 
 const parsers: Record<string, StringLiteralParser> = {};
@@ -39,3 +40,7 @@ registerLiteralParser('java', parseJavaStringLiteral);
 
 // 注册Python解析器
 registerLiteralParser('python', parsePythonStringLiteral);
+
+// 注册C/C++解析器
+registerLiteralParser('cpp', parseCppStringLiteral);
+registerLiteralParser('c', parseCppStringLiteral);

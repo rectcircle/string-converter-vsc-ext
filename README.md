@@ -31,6 +31,7 @@ Supports parsing literals from these programming languages:
 - [x] Python
 - [x] Rust
 - [x] TypeScript / JavaScript
+- [x] C/C++
 
 More languages will be supported gradually. Contributions are welcome.
 

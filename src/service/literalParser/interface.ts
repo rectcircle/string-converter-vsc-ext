@@ -2,7 +2,8 @@
 export function isStringToken(type: string): boolean {
     return type === 'string' || 
         type === 'template-string' ||
-        type === 'triple-quoted-string';
+        type === 'triple-quoted-string' ||
+        type === 'raw-string';
 }
 
 export function isNumberToken(type: string): boolean {

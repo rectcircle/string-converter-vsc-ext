@@ -200,7 +200,7 @@ export function parsePythonStringLiteral(originText: string, type: string): Stri
 }
 
 // https://www.unicode.org/Public/15.1.0/ucd/NameAliases.txt
-const unicodeNameAliasesMap: Record<string, number|undefined> = {
+export const unicodeNameAliasesMap: Record<string, number|undefined> = {
     "NULL": 0x0000,
     "NUL": 0x0000,
     "START OF HEADING": 0x0001,

@@ -4,6 +4,7 @@ import './go.test';
 import './rust.test';
 import './java.test';
 import './python.test';
+import './cpp.test';
 import { parseLiteral } from '../../../../../service/literalParser/index';
 import assert from 'assert';
 

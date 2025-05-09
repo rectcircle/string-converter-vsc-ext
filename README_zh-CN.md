@@ -31,6 +31,7 @@
 - [x] Python
 - [x] Rust
 - [x] TypeScript / JavaScript
+- [x] C/C++
 
 后续会逐步支持更多编程语言，也欢迎贡献。
 
