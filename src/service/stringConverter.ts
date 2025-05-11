@@ -4,6 +4,7 @@ import { DefaultConverter } from "./stringConverter/default";
 import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
 import { JsonParser } from "./stringConverter/json";
 import { JwtParser } from "./stringConverter/jwt";
+import { SymbolStyleConverter } from "./stringConverter/symbolStyle";
 import { TimestampParser } from "./stringConverter/timestamp";
 import { UrlParser } from "./stringConverter/url";
 
@@ -60,3 +61,6 @@ stringConverterManager.register(new UrlParser());
 
 stringConverterManager.register(new JsonParser());
 stringConverterManager.register(new DefaultConverter());
+
+// 注册符号风格转换器
+stringConverterManager.register(new SymbolStyleConverter());

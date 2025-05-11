@@ -97,8 +97,10 @@ function quickExcludeBase64(tokenInfo: TokenInfo) {
                 // 特殊处理，短单词，不应该被识别为 base64，防止误排除。
                 continue;
             }
+            // 如果单词以连续数字结尾，去除数字再去判断
+            const wordWithoutDigits = word.replace(/\d+$/, '');
             // `word` is already lowercased and length-filtered by splitByCaseAndUnderscore
-            const lookupResult = enDictSpelling.lookup(word, {suggest: false});
+            const lookupResult = enDictSpelling.lookup(wordWithoutDigits, {suggest: false});
             if (lookupResult.found) {
                 return false; // Found a valid English word part
             }

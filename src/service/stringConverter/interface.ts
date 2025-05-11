@@ -30,8 +30,13 @@ export interface StringConverterMatchResult<T = unknown> {
     byProduct?: T;
 }
 
+export type ActionType = 'copy' | 'rename';
+
 export interface StringConverterConvertResult {
-    result: string;  
+    result: string | Array<{
+        result: string;
+        actions?: Array<ActionType>; // 后续可以支持多个 action，比如 copy、 rename 等。
+    }>;
     explain?: string;
     error?: string;
 }

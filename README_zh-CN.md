@@ -35,6 +35,16 @@
 
 后续会逐步支持更多编程语言，也欢迎贡献。
 
+### 符号风格样式转换
+
+支持智能识别符号风格，并展示该标识符可以转换到其他风格（支持 PascalCase, camelCase, snake_case, SCREAMING_SNAKE_CASE 四种风格）：
+
+![str-conv-symbol-style-list](images/str-conv-symbol-style-list.png)
+
+支持复制和一键重命名：
+
+![str-conv-symbol-style-rename](images/str-conv-symbol-style-rename.gif)
+
 ### JWT令牌解析
 
 ![parse-jwt](images/str-conv-parse-jwt.png)

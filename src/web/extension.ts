@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { strconvClipboardWriteString, strconvCodeActionShowMarkdown } from '../handler/command';
+import { strconvClipboardWriteString, strconvCodeActionShowMarkdown, strconvSymbolRenameTo } from '../handler/command';
 import { strconvCodeActionProvider } from '../handler/codeAction';
 import { strconvMemFileSystemProvider, SCHEME } from '../handler/memfs';
 import { strconvHoverProvider } from '../handler/hoverProvider';
@@ -18,6 +18,8 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const clipboardWriteStringCommand = vscode.commands.registerCommand('str-conv.clipboard.writeString', strconvClipboardWriteString);
 
+	const symbolRenameToCommand =  vscode.commands.registerCommand('str-conv.symbol.renameTo', strconvSymbolRenameTo);
+
 	// const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
 
 	const contentProvider = vscode.workspace.registerTextDocumentContentProvider(SCHEME, strconvMemFileSystemProvider);
@@ -29,6 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		codeActionShowMarkdownCommand, 
 		clipboardWriteStringCommand, 
+		symbolRenameToCommand,
 		// codeActionProvider, 
 		contentProvider, 
 		hoverProvider, 

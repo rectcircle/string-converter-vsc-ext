@@ -35,6 +35,16 @@ Supports parsing literals from these programming languages:
 
 More languages will be supported gradually. Contributions are welcome.
 
+### Symbol style conversion
+
+Supports intelligent identification of symbol styles and shows that the identifier can be converted to other styles (supports four styles: PascalCase, camelCase, snake_case, SCREAMING_SNAKE_CASE):
+
+![str-conv-symbol-style-list](images/str-conv-symbol-style-list.png)
+
+Supports copying and one-click renaming:
+
+![str-conv-symbol-style-rename](images/str-conv-symbol-style-rename.gif)
+
 ### JWT Token Parsing
 
 ![parse-jwt](images/str-conv-parse-jwt.png)

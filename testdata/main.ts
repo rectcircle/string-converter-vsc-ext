@@ -58,6 +58,7 @@ console.log("YWFhYSlhYWFhKQ==")
 console.log("test");
 // 大小驼峰、下划线分割标识符，长度为 4 的倍数的标识符单测不应该被识别为 base64
 console.log("TestAbcd");
+let string12 = "string12"; // 数字结尾的变量不应该被判断为 base64
 
 
 // 测试 URL 编码字符串
@@ -91,3 +92,19 @@ console.log('{"":""}'); // 空键值
 console.log('{"key":null}'); // null值
 console.log('{"key":true}'); // 布尔值
 console.log('{"key":123}'); // 数字值
+
+function addNumber(a: number, b: number) {
+    return a + b;
+}
+
+function addOne(a: number) {
+    return addNumber(a, 1);
+}
+
+const Abc = "";
+const AbcDef = "";
+const GetIDName = "";
+const Str123 = "";
+const Abc123Def = "";
+const abc_def = "";
+const abcDef = "";

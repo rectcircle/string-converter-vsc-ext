@@ -1,6 +1,7 @@
 import { TokenInfo } from './codeParser';
 import { MatchResult } from './stringConverter';
-import { StringConverterMeta, StringConverterConvertResult } from './stringConverter/interface';
+import { StringConverterConvertResult } from './stringConverter/interface';
+import { PositionEvent } from './type';
 
 
 export interface MarkdownRenderParam {
@@ -12,7 +13,7 @@ export interface MarkdownRenderParam {
 
 const CodeBlockMarker = '```';
 
-export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
+export function renderMarkdownToPreview(param: MarkdownRenderParam, position: PositionEvent): string {
     const { matchResult: {meta}, convertResult: result} = param;
     let markdownContent = `# ${meta.name}`;
 
@@ -30,8 +31,28 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
     // ✅ 方案 4: 利用 vscode:// 机制。
     // trick: ( 符号也需要转义 %28 因为 markdown 遇到 ( 会解析异常。
     // trick: ) 符号也需要转义 %29 因为 markdown 遇到 ) 会意外闭合。
-    const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
-    markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.str-conv/clipboard.writeString?${args})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+    if (typeof result.result === 'string') {
+        const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+        markdownContent += `\n\n## Result [📋](${param.vscodeUriScheme}://rectcircle.str-conv/clipboard.writeString?${args})\n\n${CodeBlockMarker}${meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+    } else {
+        markdownContent += `\n\n## Result\n\n`;
+        for (let item of result.result) {
+            let itemResult = item.result;
+            if (itemResult.includes('\n')) {
+                itemResult = JSON.stringify(itemResult);
+            }
+            const args = encodeURIComponent(JSON.stringify([position, itemResult])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+            markdownContent += `- \`${itemResult}\``;
+            for (let action of item.actions || []) {
+                if (action === 'copy') {
+                    markdownContent += ` [📋](${param.vscodeUriScheme}://rectcircle.str-conv/clipboard.writeString?${args})`;
+                } else if (action ==='rename') {
+                    markdownContent += ` [📝](${param.vscodeUriScheme}://rectcircle.str-conv/symbol.renameTo?${args})`;
+                }
+            }
+            markdownContent += '\n';
+        }
+    }
 
     if (result.explain) {
         markdownContent += `\n\n## Explain\n\n${result.explain}`;
@@ -60,7 +81,7 @@ export function renderMarkdownToPreview(param: MarkdownRenderParam): string {
     return markdownContent;
 }
 
-export function renderMarkdownToHover(params: MarkdownRenderParam[]): string {
+export function renderMarkdownToHover(params: MarkdownRenderParam[], position: PositionEvent): string {
     let markdownParts: string[] = [];
 
     for (const param of params) {
@@ -69,10 +90,33 @@ export function renderMarkdownToHover(params: MarkdownRenderParam[]): string {
         // 示例 command:_typescript.openJsDocLink?[{"file":{"path":"/Users/bytedance/Workspace/rectcircle/str-conv-vsc-ext/node_modules/@types/vscode/index.d.ts","scheme":"file"},"position":{"line":2961,"character":1}}]
         // trick: ( 符号也需要转义 %28 因为 markdown 遇到 ( 会解析异常。
         // trick: ) 符号也需要转义 %29 因为 markdown 遇到 ) 会意外闭合。
-        const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
-        const showMarkdownArgs = encodeURIComponent(JSON.stringify([token, matchResult, result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
-        let markdownContent = `### ${matchResult.meta.name} [$(copy)](command:str-conv.clipboard.writeString?${args}) [$(open-editors-view-icon)](command:str-conv.codeAction.showMarkdown?${showMarkdownArgs})`;
-        markdownContent += `\n\n${CodeBlockMarker}${matchResult.meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+        let markdownContent = '';
+        const showMarkdownArgs = encodeURIComponent(JSON.stringify([token, matchResult, position, result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+        if (typeof result.result ==='string') {
+            const args = encodeURIComponent(JSON.stringify([result.result])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+            markdownContent += `### ${matchResult.meta.name} [$(copy)](command:str-conv.clipboard.writeString?${args}) [$(open-editors-view-icon)](command:str-conv.codeAction.showMarkdown?${showMarkdownArgs})`;
+            markdownContent += `\n\n${CodeBlockMarker}${matchResult.meta.resultLanguageId}\n${result.result}\n${CodeBlockMarker}`;
+        } else {
+            markdownContent += `### ${matchResult.meta.name} [$(open-editors-view-icon)](command:str-conv.codeAction.showMarkdown?${showMarkdownArgs})`;
+            markdownContent += `\n\n`;
+            for (let item of result.result) {
+                let itemResult = item.result;
+                if (itemResult .includes('\n')) {
+                    itemResult  = JSON.stringify(itemResult );
+                }
+                const args = encodeURIComponent(JSON.stringify([position, itemResult])).replace(/\(/g, '%28').replace(/\)/g, '%29');
+                markdownContent += `- \`${itemResult }\``;
+                for (let action of item.actions || []) {
+                    if (action === 'copy') {
+                        markdownContent += ` [$(copy)](command:str-conv.clipboard.writeString?${args})`;
+                    } else if (action === 'rename') {
+                        markdownContent += ` [$(find-replace-all)](command:str-conv.symbol.renameTo?${args})`;
+                    }
+                }
+                
+                markdownContent += '\n';
+            }
+        }
         if (result.explain) {
             markdownContent += `\n\n${result.explain}`;
         }

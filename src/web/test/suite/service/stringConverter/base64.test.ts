@@ -220,6 +220,7 @@ suite('src/service/stringConverter/base64.ts', () => {
                     originText: '"iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAIklEQVQ4jWP8////fwYqAiZqGjZq4KiBowaOGjhq4FAyEACzFQQkuFxUKAAAAABJRU5ErkJggg=="'
                 };
                 const result = parser.convert(tokenInfo);
+                assert.ok(typeof result.result === 'string');
                 assert.ok(result.result.includes('PNG'));
                 assert.ok(result.explain?.includes('png'));
             });

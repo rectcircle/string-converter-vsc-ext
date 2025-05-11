@@ -4,8 +4,9 @@ All notable changes to the "str-conv" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [1.1.0]
 
+- Added symbol style converter and supports one-click renaming of symbols to other styles.
 - Fix some identifier was misidentified as base64.
 
 ## [1.0.4]

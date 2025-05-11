@@ -1,3 +1,6 @@
+def func():
+    return "Hello, World!"
+
 # 测试不同引号类型
 print('single quoted string')
 print("double quoted string")

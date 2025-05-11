@@ -2,6 +2,8 @@ import Prism from 'prismjs';
 import { parseLiteral } from './literalParser';
 import { parseRawStringMarker } from './literalParser/rust';
 import { isStringToken } from './literalParser/interface';
+import { canRename } from './vscode';
+import { PositionEvent } from './type';
 
 export interface TokenInfo {
     originText: string;
@@ -32,7 +34,7 @@ function getTokenContent(token: Prism.Token | string): string {
     return '';
 }
 
-function toTokenInfo(tokens: (string | Prism.Token)[], index: number, token: Prism.Token, languageId: string, startOffset: number, endOffset: number) : internalTokenInfo {
+async function toTokenInfo(codeContent: string, tokens: (string | Prism.Token)[], index: number, token: Prism.Token, languageId: string, startOffset: number, endOffset: number, positionEvent?: PositionEvent) : Promise<internalTokenInfo> {
     let originText = getTokenContent(token);
     let type = token.type;
     if (type === 'unknown') {
@@ -52,6 +54,17 @@ function toTokenInfo(tokens: (string | Prism.Token)[], index: number, token: Pri
                 startOffset = startOffset - 2;
                 endOffset = endOffset + 3;
             }
+        } else if (positionEvent) {
+            // 使用 canRename api 来判断是否可以 rename，如果可以 rename 那么可以推断这个地方是一个符号。
+            // TODO: 调研考虑是否可以使用 vscode.executeDocumentSymbolProvider 更加科学呢？
+            const canRenameResult = await canRename(positionEvent);
+            if (canRenameResult) {
+                // rename 获取到信息更置信
+                originText = codeContent.substring(canRenameResult.startOffset, canRenameResult.endOffset);
+                type = 'symbol';
+                startOffset = canRenameResult.startOffset;
+                endOffset = canRenameResult.endOffset;
+            }
         }
     }
 
@@ -64,13 +77,14 @@ function toTokenInfo(tokens: (string | Prism.Token)[], index: number, token: Pri
     };
 }
 
-export function extractCodeTokens(
+export async function extractCodeTokens(
     codeContent: string,
     languageId: string,
     offset: number,  // 包含
     endOffset?: number,  // 不包含
-    selectionText?: string
-): TokenInfo[] {
+    selectionText?: string,
+    positionEvent?: PositionEvent,
+): Promise<TokenInfo[]> {
     // 检查语言支持
     // 导入 Prism 库
     if (!Prism.languages[languageId]) {
@@ -118,12 +132,15 @@ export function extractCodeTokens(
             if (currentEndOffset < offset) {
                 continue;
             }
-            tokenInfos.push(toTokenInfo(tokens, index, token, languageId, currentStartOffset, currentEndOffset));
+            // fixme: 如果有用户选中，这里如果传递了 positionEvent。
+            // 在 plaintext 场景，会误识别，所以这里先不传递 positionEvent。
+            // 后续如果有需要，可以再优化。
+            tokenInfos.push(await toTokenInfo(codeContent, tokens, index, token, languageId, currentStartOffset, currentEndOffset, undefined));
             continue;
         }
         // 是光标位置
         if (offset >= currentStartOffset && offset <= currentEndOffset) {
-            tokenInfos.push(toTokenInfo(tokens, index, token, languageId, currentStartOffset, currentEndOffset));
+            tokenInfos.push(await toTokenInfo(codeContent, tokens, index, token, languageId, currentStartOffset, currentEndOffset, positionEvent));
             break;
         }
     }

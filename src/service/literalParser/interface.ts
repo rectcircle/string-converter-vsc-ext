@@ -14,6 +14,10 @@ export function isUnknownToken(type: string): boolean {
     return type === 'unknown';
 }
 
+export function isSymbolToken(type: string): boolean {
+    return type === 'symbol' || type === 'macro' || type === 'function';
+}
+
 export interface StringLiteralParseResult {
     text: string;
     startMarker?: string, 

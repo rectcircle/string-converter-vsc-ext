@@ -82,3 +82,21 @@ const char* str51 = "This is a\n"
 
 // 测试包含各种字符的字符串
 const char* str52 = "Mixed string with \n newline, \t tab, \x41 hex, \141 octal";
+
+int add_int(int a, int b) {
+    return a + b;
+}
+
+int ADD_INT(int a, int b) {
+    return a + b;
+}
+
+int AddInt(int a, int b) {
+    return a + b;
+}
+
+int addInt(int a, int b) {
+    return a + b;
+}
+
+

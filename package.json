@@ -2,7 +2,7 @@
   "name": "str-conv",
   "displayName": "String Converter",
   "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "publisher": "Rectcircle",
   "author": {
     "name": "Rectcircle",
