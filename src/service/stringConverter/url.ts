@@ -1,6 +1,6 @@
 import { TokenInfo } from "../codeParser";
 import { isStringToken, isUnknownToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 
 interface URLMatchByProduct {
     decodedString: string;
@@ -25,7 +25,7 @@ export class UrlParser implements StringConverter<URLMatchByProduct> {
         }
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<URLMatchByProduct> {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<URLMatchByProduct> {
         if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
@@ -79,7 +79,7 @@ export class UrlParser implements StringConverter<URLMatchByProduct> {
         return { matched: false };
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: URLMatchByProduct, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: URLMatchByProduct, options?: StringConverterMatchOptions): StringConverterConvertResult {
         try {
             // 解码URL编码字符串
             byproductOfMatch = byproductOfMatch || this.match(tokenInfo).byProduct;

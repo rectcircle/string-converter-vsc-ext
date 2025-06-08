@@ -1,6 +1,6 @@
 import { TokenInfo } from "../codeParser";
 import { isStringToken, isNumberToken, isUnknownToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 import moment from "moment";
 
 type TimestampUnit = "s" | "ms";
@@ -33,7 +33,7 @@ export class TimestampParser implements StringConverter<TimestampMatchResult> {
         }
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<TimestampMatchResult> {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<TimestampMatchResult> {
         if (!isStringToken(tokenInfo.type) && !isNumberToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
@@ -73,7 +73,7 @@ export class TimestampParser implements StringConverter<TimestampMatchResult> {
         }
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: TimestampMatchResult, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: TimestampMatchResult, options?: StringConverterMatchOptions): StringConverterConvertResult {
 
         byproductOfMatch = byproductOfMatch || this.match(tokenInfo).byProduct;
 

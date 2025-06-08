@@ -29,7 +29,9 @@ export const strconvHoverProvider : vscode.HoverProvider = {
 
         // 解析 token
         const results = (await Promise.all(tokens.flatMap(token => {
-            return stringConverterManager.match(token).map(r => {
+            return stringConverterManager.match(token, {
+                triggerSource: 'hover',
+            }).map(r => {
                 return {
                     token: token,
                     matchResult: r,

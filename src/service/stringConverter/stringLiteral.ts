@@ -1,15 +1,15 @@
 import { TokenInfo } from "../codeParser";
 import { isStringToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 
-export class DefaultConverter implements StringConverter {
+export class StringLiteralConverter implements StringConverter {
     meta: StringConverterMeta = {
-        id: "default-converter",
+        id: "string-literal",
         name: "Resolve the String Literal Escapes",
         resultLanguageId: "plaintext",
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult {
         if (!isStringToken(tokenInfo.type)) {
             return { matched: false };
         }
@@ -24,7 +24,7 @@ export class DefaultConverter implements StringConverter {
         };
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: null, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: null, options?: StringConverterMatchOptions): StringConverterConvertResult {
         return {
             result: tokenInfo.text,
         };

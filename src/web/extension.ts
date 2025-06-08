@@ -20,7 +20,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const symbolRenameToCommand =  vscode.commands.registerCommand('str-conv.symbol.renameTo', strconvSymbolRenameTo);
 
-	// const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
+	const codeActionProvider = vscode.languages.registerCodeActionsProvider('*', strconvCodeActionProvider);
 
 	const contentProvider = vscode.workspace.registerTextDocumentContentProvider(SCHEME, strconvMemFileSystemProvider);
 

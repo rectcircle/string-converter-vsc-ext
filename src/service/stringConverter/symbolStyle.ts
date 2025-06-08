@@ -1,6 +1,6 @@
 import { TokenInfo } from "../codeParser";
 import { isSymbolToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 
 // Abc => abc
 // AbcDef => abc, def
@@ -110,12 +110,13 @@ function toSnakeCase(words: string[], upper: boolean = false): string {
 export class SymbolStyleConverter implements StringConverter<string[]> {
 
   meta: StringConverterMeta = {
-    id: 'symbolStyle',
+    id: 'symbol-style-converter',
     name: 'Symbol Style Converter',
     resultLanguageId: 'plaintext',
+    expandAction: true,
   };
   
-  match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<string[]> {
+  match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<string[]> {
     if (!isSymbolToken(tokenInfo.type)) {
       return { matched: false };
     }
@@ -186,7 +187,7 @@ export class SymbolStyleConverter implements StringConverter<string[]> {
     return { matched: true, byProduct: results };
   }
   
-  convert(tokenInfo: TokenInfo, byproductOfMatch?: string[], options?: StringConverterOptions): StringConverterConvertResult {
+  convert(tokenInfo: TokenInfo, byproductOfMatch?: string[], options?: StringConverterMatchOptions): StringConverterConvertResult {
     const result = byproductOfMatch || this.match(tokenInfo).byProduct;
     if (!result) {
       throw new Error(`\`${tokenInfo.text}\` is not a valid symbol`);

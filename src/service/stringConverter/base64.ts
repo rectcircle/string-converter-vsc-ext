@@ -1,6 +1,6 @@
 import { TokenInfo } from "../codeParser";
 import { isStringToken, isUnknownToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 import chardet from 'chardet';
 import iconv from 'iconv-lite';
 import { filetypeinfo } from 'magic-bytes.js';
@@ -112,8 +112,8 @@ function quickExcludeBase64(tokenInfo: TokenInfo) {
 
 export class Base64StringParser implements StringConverter<Base64MatchResult> {
     meta: StringConverterMeta = {
-        id: "base64-parser-string",
-        name: "Parse Base64 (String)",
+        id: "base64-parser-text",
+        name: "Parse Base64 (text)",
         resultLanguageId: "plaintext",
         specInfo: {
             name: "Base64",
@@ -128,7 +128,7 @@ export class Base64StringParser implements StringConverter<Base64MatchResult> {
         }
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<Base64MatchResult> {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<Base64MatchResult> {
         let text = tokenInfo.text;
         if (quickExcludeBase64(tokenInfo) === false) {
             return { matched: false };
@@ -168,7 +168,7 @@ export class Base64StringParser implements StringConverter<Base64MatchResult> {
         }
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: Base64MatchResult, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: Base64MatchResult, options?: StringConverterMatchOptions): StringConverterConvertResult {
         byproductOfMatch = byproductOfMatch || this.match(tokenInfo).byProduct;
 
         if (!byproductOfMatch) {
@@ -205,7 +205,7 @@ export class Base64BinaryParser implements StringConverter<Base64MatchResult> {
         }
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<Base64MatchResult> {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<Base64MatchResult> {
         if (quickExcludeBase64(tokenInfo) === false) {
             return { matched: false };
         }
@@ -231,7 +231,7 @@ export class Base64BinaryParser implements StringConverter<Base64MatchResult> {
         }
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: Base64MatchResult, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: Base64MatchResult, options?: StringConverterMatchOptions): StringConverterConvertResult {
         byproductOfMatch = byproductOfMatch || this.match(tokenInfo).byProduct;
 
         if (!byproductOfMatch) {

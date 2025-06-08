@@ -1,6 +1,6 @@
 import { TokenInfo } from "../codeParser";
 import { isStringToken, isUnknownToken } from "../literalParser/interface";
-import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterOptions } from "./interface";
+import { StringConverter, StringConverterConvertResult, StringConverterMatchResult, StringConverterMeta, StringConverterMatchOptions } from "./interface";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import moment from "moment";
 
@@ -26,7 +26,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
         }
     };
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<JwtPayload> {
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<JwtPayload> {
         if (!isStringToken(tokenInfo.type) && !isUnknownToken(tokenInfo.type)) {
             return { matched: false };
         }
@@ -41,7 +41,7 @@ export class JwtParser implements StringConverter<JwtPayload> {
         }
     }
 
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: JwtPayload, options?: StringConverterOptions): StringConverterConvertResult {
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: JwtPayload, options?: StringConverterMatchOptions): StringConverterConvertResult {
         const header = jwtDecode(tokenInfo.text, { header: true });
         const payload = byproductOfMatch || jwtDecode(tokenInfo.text);
         const result = JSON.stringify({

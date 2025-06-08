@@ -17,10 +17,15 @@ export interface StringConverterMeta {
             title: string;
             url: string;
         }[];
-    }
+    },
+    expandAction?: boolean;
 }
 
-export interface StringConverterOptions {
+export type StringConverterTriggerSource = 'codeAction' | 'hover' | '*';
+
+export interface StringConverterMatchOptions {
+    // 触发源
+    triggerSource?: StringConverterTriggerSource;
 }
 
 export interface StringConverterMatchResult<T = unknown> {
@@ -44,8 +49,8 @@ export interface StringConverterConvertResult {
 export interface StringConverter<T = unknown> {
     meta: StringConverterMeta;
     
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): StringConverterMatchResult<T>;
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): StringConverterMatchResult<T>;
     
-    convert(tokenInfo: TokenInfo, byproductOfMatch?: T, options?: StringConverterOptions): StringConverterConvertResult;
+    convert(tokenInfo: TokenInfo, byproductOfMatch?: T, options?: StringConverterMatchOptions): StringConverterConvertResult;
 }
 

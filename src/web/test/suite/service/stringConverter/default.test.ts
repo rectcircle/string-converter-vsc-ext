@@ -1,10 +1,10 @@
 import assert  from 'assert';
-import { DefaultConverter } from '../../../../../service/stringConverter/default';
+import { StringLiteralConverter } from '../../../../../service/stringConverter/stringLiteral';
 import { TokenInfo } from '../../../../../service/codeParser';
 
 suite('src/service/stringConverter/default.ts', () => {
     suite('DefaultConverter', () => {
-        const converter = new DefaultConverter();
+        const converter = new StringLiteralConverter();
 
         suite('match()', () => {
             test('应该返回false当类型不是string或template-string', () => {

@@ -1,7 +1,7 @@
 import { TokenInfo } from "./codeParser";
 import { Base64BinaryParser, Base64StringParser } from "./stringConverter/base64";
-import { DefaultConverter } from "./stringConverter/default";
-import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterOptions } from "./stringConverter/interface";
+import { StringLiteralConverter } from "./stringConverter/stringLiteral";
+import { StringConverter, StringConverterConvertResult, StringConverterMeta, StringConverterMatchOptions, StringConverterTriggerSource } from "./stringConverter/interface";
 import { JsonParser } from "./stringConverter/json";
 import { JwtParser } from "./stringConverter/jwt";
 import { SymbolStyleConverter } from "./stringConverter/symbolStyle";
@@ -15,13 +15,34 @@ export interface MatchResult {
 
 class StringConverterManager {
     private converters: StringConverter<any>[] = [];
+    private converterSupportTiggerSources: {
+        [key in string]: StringConverterTriggerSource[];
+    } = {};
 
-    register(converter: StringConverter): void {
+    register(converter: StringConverter, supportTriggerSources?: StringConverterTriggerSource[] ): void {
         this.converters.push(converter);
+        this.converterSupportTiggerSources[converter.meta.id] = supportTriggerSources || ['*'];
     }
 
-    match(tokenInfo: TokenInfo, options?: StringConverterOptions): MatchResult[] {
+    setSupportTriggerSources(converterId: string, supportTriggerSources: StringConverterTriggerSource[]): void {
+        this.converterSupportTiggerSources[converterId] = supportTriggerSources;
+    }
+
+    match(tokenInfo: TokenInfo, options?: StringConverterMatchOptions): MatchResult[] {
         return this.converters
+            .filter(converter => {
+                if (!options) {
+                    return true;
+                }
+                if (!options.triggerSource) {
+                    return true;
+                }
+                const supportTriggerSources = this.converterSupportTiggerSources[converter.meta.id];
+                if (!supportTriggerSources) {
+                    return true;
+                }
+                return supportTriggerSources.includes(options.triggerSource) || supportTriggerSources.includes('*');
+            })
             .map(converter => {
                 return {
                     matchResult: converter.match(tokenInfo, options),
@@ -40,7 +61,7 @@ class StringConverterManager {
     convert(
         tokenInfo: TokenInfo, 
         matchResult: MatchResult, 
-        options?: StringConverterOptions
+        options?: StringConverterMatchOptions
     ): StringConverterConvertResult {
         const converter = this.converters.find(c => c.meta.id === matchResult.meta.id);
         if (!converter) {
@@ -53,14 +74,11 @@ class StringConverterManager {
 export const stringConverterManager = new StringConverterManager();
 
 // 注册转换器
-stringConverterManager.register(new JwtParser());
-stringConverterManager.register(new TimestampParser());
-stringConverterManager.register(new Base64StringParser());
-stringConverterManager.register(new Base64BinaryParser());
-stringConverterManager.register(new UrlParser());
-
-stringConverterManager.register(new JsonParser());
-stringConverterManager.register(new DefaultConverter());
-
-// 注册符号风格转换器
-stringConverterManager.register(new SymbolStyleConverter());
+stringConverterManager.register(new JwtParser(), ['hover']);
+stringConverterManager.register(new TimestampParser(), ['hover']);
+stringConverterManager.register(new Base64StringParser(), ['codeAction']);
+stringConverterManager.register(new Base64BinaryParser(), ['codeAction']);
+stringConverterManager.register(new UrlParser(), ['hover']);
+stringConverterManager.register(new JsonParser(), ['hover']);
+stringConverterManager.register(new StringLiteralConverter(), ['hover']);
+stringConverterManager.register(new SymbolStyleConverter(), ['codeAction']);
