@@ -25,6 +25,8 @@ export function parseLiteral(languageId: string, originText: string, type: strin
 // 注册TypeScript/JavaScript解析器
 registerLiteralParser('typescript', parseTypeScriptStringLiteral);
 registerLiteralParser('javascript', parseTypeScriptStringLiteral);
+registerLiteralParser('typescriptreact', parseTypeScriptStringLiteral);
+registerLiteralParser('javascriptreact', parseTypeScriptStringLiteral);
 
 // 注册JSON解析器
 registerLiteralParser('json', parseJSONStringLiteral);

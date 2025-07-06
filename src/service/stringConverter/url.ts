@@ -38,6 +38,10 @@ export class UrlParser implements StringConverter<URLMatchByProduct> {
             }
         };
 
+        if (tokenInfo.text.includes("\n")) {
+            return { matched: false };
+        }
+
         // 如果长度 <= 8k 直接使用 decodeURIComponent 尝试解码，然后比较是否相同的方式进行匹配。
         if (tokenInfo.text.length <= 8192 ) {
             const decodedString = decodeURIComponent(tokenInfo.text);

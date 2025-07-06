@@ -11,8 +11,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - [x] 标准化 string converter id。
 - [x] 在 code action 展平符号样式转换器 rename 的展示方式。 
 - [x] 支持配置转换器的触发方式为 hover 或 code action。
-- [] URL 误触严重问题。
-- [] 添加 jsx 和 tsx 语言支持。
+- [x] 如果 URL 字符串包含换行符，不触发。
+- [x] 添加 jsx 和 tsx 语言支持。
+- [ ] 添加 html、vue 语言支持，并优化 jsx 和 tsx 中 html 标签部分的解析。
 
 ## [1.1.0]
 

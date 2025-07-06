@@ -1,6 +1,5 @@
 import Prism from 'prismjs';
 import { parseLiteral } from './literalParser';
-import { parseRawStringMarker } from './literalParser/rust';
 import { isStringToken } from './literalParser/interface';
 import { canRename } from './vscode';
 import { PositionEvent } from './type';
@@ -77,6 +76,18 @@ async function toTokenInfo(codeContent: string, tokens: (string | Prism.Token)[]
     };
 }
 
+function vscodeLanguageIdToPrism(languageId: string) {
+    switch (languageId) {
+        case 'javascriptreact':
+            return 'jsx';
+        case 'typescriptreact':
+            return 'tsx';
+        default:
+            return languageId;
+    }
+}
+
+
 export async function extractCodeTokens(
     codeContent: string,
     languageId: string,
@@ -87,7 +98,7 @@ export async function extractCodeTokens(
 ): Promise<TokenInfo[]> {
     // 检查语言支持
     // 导入 Prism 库
-    if (!Prism.languages[languageId]) {
+    if (!Prism.languages[vscodeLanguageIdToPrism(languageId)]) {
         if (endOffset !== undefined && selectionText) {
             return [{
                 originText: selectionText,
@@ -98,7 +109,7 @@ export async function extractCodeTokens(
         return [];
     }
     // 获取token列表
-    const tokens = Prism.tokenize(codeContent, Prism.languages[languageId]);
+    const tokens = Prism.tokenize(codeContent, Prism.languages[vscodeLanguageIdToPrism(languageId)]);
     const tokenInfos: internalTokenInfo[] = [];
 
     // 过滤 offset，endOffset? 范围内的 token。
@@ -152,16 +163,8 @@ export async function extractCodeTokens(
         (isStringToken(tokenInfos[0].type) || tokenInfos[0].type === 'unknown' )
     ) {
         const tokenInfo = tokenInfos[0];
-        const tokenOriginText = tokenInfo.originText;
         let startMarker = '';
         let endMarker = '';
-        let specialMarkers: {
-            startMarker: string;
-            endMarker: string;
-        } | undefined;
-        if (languageId === 'rust') {
-            specialMarkers = parseRawStringMarker(tokenOriginText);
-        }
         if (tokenInfo.startOffset !== offset) {
             startMarker = tokenInfo?.startMarker || '';
         }
