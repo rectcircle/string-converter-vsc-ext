@@ -126,7 +126,7 @@ Future updates may include converter toggles, priorities, and specific configura
 
 ## Known Issues
 
-None currently.
+- Since no VSCode lexical tree-related API was found, this extension has to use the `prismjs` library as a code tokenizer. However, `prismjs` has weaker tokenizing capabilities and may cause parsing errors in some scenarios.
 
 ## Changelog
 
