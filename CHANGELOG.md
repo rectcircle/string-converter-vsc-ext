@@ -6,14 +6,27 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-- [x] 启用区全新的触发方式 code action。
-- [x] 将 base64 和 符号样式转换期默认触发方式改成 code action。
-- [x] 标准化 string converter id。
-- [x] 在 code action 展平符号样式转换器 rename 的展示方式。 
-- [x] 支持配置转换器的触发方式为 hover 或 code action。
-- [x] 如果 URL 字符串包含换行符，不触发。
-- [x] 添加 jsx 和 tsx 语言支持。
-- [ ] 添加 html、vue 语言支持，并优化 jsx 和 tsx 中 html 标签部分的解析。
+- [ ] Add html, vue language support, and optimize the parsing of html tags in jsx and tsx.
+
+## [1.2.1]
+
+Added
+
+- Enabled a new trigger method: code action.
+- Flattened the display of the rename symbol style converter in code actions.
+- Support configuring the trigger method for converters as hover or code action.
+- Support for jsx and tsx languages.
+- `package.json` vscode i10n support chinese.
+
+Changed
+
+- The default trigger method for base64 and symbol style converters to code action.
+- Standardized string converter IDs.
+
+Fixed
+
+- Do not trigger if the URL string contains a newline character.
+
 
 ## [1.1.0]
 
