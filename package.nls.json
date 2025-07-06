@@ -1,0 +1,15 @@
+{
+    "displayName": "String Converter",
+    "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
+    "configuration.title": "String Converter",
+    "configuration.properties.str-conv.trigger.hover.description": "Trigger string converters when hover",
+    "configuration.properties.str-conv.trigger.codeAction.description": "Trigger string converters when code action",
+    "enumDescription.jwt-parser": "Parse the JWT String",
+    "enumDescription.timestamp-parser": "Parse Timestamp",
+    "enumDescription.base64-parser-text": "Parse Base64 (text)",
+    "enumDescription.base64-parser-binary": "Parse Base64 (Binary)",
+    "enumDescription.url-parser": "Parse URL String",
+    "enumDescription.json-formater": "Format JSON String",
+    "enumDescription.string-literal": "Resolve the String Literal Escapes",
+    "enumDescription.symbol-style-converter": "Symbol Style Converter"
+}

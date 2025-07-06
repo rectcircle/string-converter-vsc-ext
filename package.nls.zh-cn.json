@@ -1,0 +1,15 @@
+{
+    "displayName": "字符串转换器",
+    "description": "智能识别文件中的字符串格式，进行解析、格式化、转换等。",
+    "configuration.title": "字符串转换器",
+    "configuration.properties.str-conv.trigger.hover.description": "悬停时触发的字符串转换器",
+    "configuration.properties.str-conv.trigger.codeAction.description": "代码操作时触发的字符串转换器",
+    "enumDescription.jwt-parser": "解析 JWT 字符串",
+    "enumDescription.timestamp-parser": "解析时间戳",
+    "enumDescription.base64-parser-text": "解析 Base64 (文本)",
+    "enumDescription.base64-parser-binary": "解析 Base64 (二进制)",
+    "enumDescription.url-parser": "解析 URL 字符串",
+    "enumDescription.json-formater": "格式化 JSON 字符串",
+    "enumDescription.string-literal": "解析字符串字面量转义",
+    "enumDescription.symbol-style-converter": "符号风格转换器"
+}

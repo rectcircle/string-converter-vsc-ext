@@ -1,7 +1,7 @@
 {
   "name": "str-conv",
-  "displayName": "String Converter",
-  "description": "Intelligently identify string formats in files to parse, format, convert, etc.",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "1.1.0",
   "publisher": "Rectcircle",
   "author": {
@@ -40,7 +40,68 @@
   ],
   "browser": "./dist/web/extension.js",
   "contributes": {
-    "commands": []
+    "commands": [],
+    "configuration": {
+      "title": "%configuration.title%",
+      "properties": {
+        "str-conv.trigger.hover": {
+          "type": "array",
+          "description": "%configuration.properties.str-conv.trigger.hover.description%",
+          "default": ["jwt-parser", "timestamp-parser", "url-parser", "json-formater", "string-literal"],
+          "items": {
+            "type": "string",
+            "enum": [
+              "jwt-parser",
+              "timestamp-parser",
+              "base64-parser-text",
+              "base64-parser-binary",
+              "url-parser",
+              "json-formater",
+              "string-literal",
+              "symbol-style-converter"
+            ],
+            "markdownEnumDescriptions": [
+              "%enumDescription.jwt-parser%",
+              "%enumDescription.timestamp-parser%",
+              "%enumDescription.base64-parser-text%",
+              "%enumDescription.base64-parser-binary%",
+              "%enumDescription.url-parser%",
+              "%enumDescription.json-formater%",
+              "%enumDescription.string-literal%",
+              "%enumDescription.symbol-style-converter%"
+            ]
+          }
+        },
+        "str-conv.trigger.codeAction": {
+          "type": "array",
+          "description": "%configuration.properties.str-conv.trigger.codeAction.description%",
+          "default": ["base64-parser-text", "base64-parser-binary", "symbol-style-converter"],
+          "items": {
+            "type": "string",
+            "enum": [
+              "jwt-parser",
+              "timestamp-parser",
+              "base64-parser-text",
+              "base64-parser-binary",
+              "url-parser",
+              "json-formater",
+              "string-literal",
+              "symbol-style-converter"
+            ],
+            "markdownEnumDescriptions": [
+              "%enumDescription.jwt-parser%",
+              "%enumDescription.timestamp-parser%",
+              "%enumDescription.base64-parser-text%",
+              "%enumDescription.base64-parser-binary%",
+              "%enumDescription.url-parser%",
+              "%enumDescription.json-formater%",
+              "%enumDescription.string-literal%",
+              "%enumDescription.symbol-style-converter%"
+            ]
+          }
+        }
+      }
+    }
   },
   "extensionDependencies": [],
   "scripts": {

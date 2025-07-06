@@ -6,6 +6,7 @@ import { strconvCodeActionProvider } from '../handler/codeAction';
 import { strconvMemFileSystemProvider, SCHEME } from '../handler/memfs';
 import { strconvHoverProvider } from '../handler/hoverProvider';
 import { strconvUriHandler } from '../handler/uriHandler';
+import { onDidChangeConfigurationHandler } from '../handler/configuration';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -13,6 +14,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "str-conv" is now active in the web extension host!');
+
+	onDidChangeConfigurationHandler();
+	const configurationChangeHandler = vscode.workspace.onDidChangeConfiguration(onDidChangeConfigurationHandler);
 
 	const codeActionShowMarkdownCommand = vscode.commands.registerCommand('str-conv.codeAction.showMarkdown', strconvCodeActionShowMarkdown);
 
@@ -32,10 +36,11 @@ export async function activate(context: vscode.ExtensionContext) {
 		codeActionShowMarkdownCommand, 
 		clipboardWriteStringCommand, 
 		symbolRenameToCommand,
-		// codeActionProvider, 
+		codeActionProvider, 
 		contentProvider, 
 		hoverProvider, 
-		uriHandler
+		uriHandler,
+		configurationChangeHandler,
 	);
 }
 

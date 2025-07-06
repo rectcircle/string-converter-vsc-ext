@@ -10,7 +10,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - [x] 将 base64 和 符号样式转换期默认触发方式改成 code action。
 - [x] 标准化 string converter id。
 - [x] 在 code action 展平符号样式转换器 rename 的展示方式。 
-- [] 支持配置转换器的触发方式为 hover 或 code action。
+- [x] 支持配置转换器的触发方式为 hover 或 code action。
 - [] URL 误触严重问题。
 - [] 添加 jsx 和 tsx 语言支持。
 
